@@ -1,0 +1,49 @@
+.d3-chart {
+    width: 100%;
+    min-height:600px;
+  }
+  :host ::ng-deep .node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
+  
+  :host ::ng-deep .node text {
+    font: 10px sans-serif;
+  }
+  
+  :host ::ng-deep .link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+  }
+  
+  :host ::ng-deep .active {
+    stroke-width: 1px !important;
+  }
+
+  :host ::ng-deep .selected text{
+    stroke-width: 2px !important;
+    fill: rgb(187, 97, 14);
+  }
+  
+  :host ::ng-deep .ghostCircle.show{
+      display:block;
+  }
+
+  :host ::ng-deep .ghostCircle.over{
+    fill: green !important;
+    stroke: steelblue;
+    stroke-width: 0.2px;
+  }
+  
+  :host ::ng-deep .ghostCircle, .active .ghostCircle{
+       display: none;
+  }
+
+  :host ::ng-deep .templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+  }
+  

@@ -1,2 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<si-sl-tree></si-sl-tree>
+<si-sl-tree
+[(treeData)]="data"
+  (onNodeChanged)="nodeUpdated($event)"
+  (onNodeSelected)="nodeSelected($event)"
+></si-sl-tree>

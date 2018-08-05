@@ -15,11 +15,11 @@ export class TreeModel {
   duration: number= 750;
   nodeWidth: number = 1;
   nodeHeight: number = 1;
-  nodeRadius: number = 5;
-  horizontalSeparationBetweenNodes: number = 1;
-  verticalSeparationBetweenNodes: number = 1;
-  nodeTextDistanceY: string= "-5px";
-  nodeTextDistanceX: number= 5;
+  nodeRadius: number = 10;
+  horizontalSeparationBetweenNodes: number = 10;
+  verticalSeparationBetweenNodes: number = 20;
+  nodeTextDistanceY: string = "20px";
+  nodeTextDistanceX: number = 20;
 
   dragStarted: boolean;
   draggingNode: any;
@@ -71,11 +71,11 @@ export class TreeModel {
     this.root = d3.stratify<any>()
           .id(function(d) { return d.id; })
           .parentId(function(d) { return d.parent; })
-          (treeData);
+          (treeData)  ;
     this.root.x0 = this.height / 2;
     this.root.y0 = 0;
 
-    this.root.data.children.map((d)=>this.collapse(d));
+    this.root.children.map((d)=>this.collapse(d));
   }
 
   collapse(d) {
@@ -117,30 +117,55 @@ export class TreeModel {
     let nodes = treeData.descendants();
     let i = 0;
     let treeModel= this;
+    let nodeTextX  = this.nodeTextDistanceX;
+    let nodeTextY = this.nodeTextDistanceY;
 
     nodes.forEach(function(d){ d.y = d.depth * 180});
 
+    
     var node = this.svg.selectAll('g.node')
         .data(nodes, function(d) {return d.id || (d.id = ++this.i); });
 
+    let bRect = node.id % 2 == 0;
+
+    // Set each node g element  
     var nodeEnter = node.enter().append('g')
         .attr('class', 'node')
         .attr("transform", function(d) {
             return "translate(" + source.y0 + "," + source.x0 + ")";
         });
 
+    // if(bRect){
+    // This circle marks nodes that have child nodes
     nodeEnter.append('circle')
-        .attr('class', 'node')
+        .attr('class', 'node circle')
         .attr('r', 1e-6)
         .style("fill", function(d) {
-            return d._children ? "lightsteelblue" : "#fff";
+            return d._children ? "red" : "blue";
         });
+      
+    // }
+    // else{
+    //   nodeEnter.append("rect")
+    //       .attr('class', 'node circle')
+    //       .attr("x", 0) //<-- x is taken care of by translate
+    //       .attr("y", -20/2) //<-- just use y to center the rect
+    //       .attr("width", 20)
+    //       .attr("height", 20)
+    //       .style("fill", function(d) {
+    //         return d._children ? "red" : "blue";
+    //       });
+          
+    // }
 
+
+    // show node text left in case node has children, show right in case node has no children
     nodeEnter.append('text')
-        .attr("dy", this.nodeTextDistanceY )
-        .attr("x", function(d) {
-            return d.children || d._children ? -1 : 1;
-        })
+        .attr("dy", nodeTextY )
+        .attr("dx", function(d) {
+          
+            return  nodeTextX * (d.children || d._children ? -1 : 1);
+        }  )
         .attr("text-anchor", function(d) {
             return d.children || d._children ? "end" : "start";
         })
@@ -148,20 +173,31 @@ export class TreeModel {
               return d.data.name || d.data.description || d.id;
             });
 
-    nodeEnter.append("circle")
-        .attr('class', 'ghostCircle')
-        .attr("r", this.nodeRadius*2)
-        .attr("opacity", 0.2) // change this to zero to hide the target area
-        .style("fill", "red")
-        .attr('pointer-events', 'mouseover')
-        .on("mouseover", function(node) {
-            treeModel.overCircle(node);
-            this.classList.add("over");
-        })
-        .on("mouseout", function(node) {
-            treeModel.outCircle(node);
-            this.classList.remove("over");
-        });
+    // if(bRect){
+      // This circle is node symbol circle    
+      nodeEnter.append("circle")
+          .attr('class', 'ghostCircle')
+          .attr("r", this.nodeRadius*2)
+          .attr("opacity", 0.2) // change this to zero to hide the target area
+          .style("fill", "blue")
+          .attr('pointer-events', 'mouseover')
+          .on("mouseover", function(node) {
+              treeModel.overCircle(node);
+              this.classList.add("over");
+          })
+          .on("mouseout", function(node) {
+              treeModel.outCircle(node);
+              this.classList.remove("over");
+          });
+    // }
+    // else{
+    //   nodeEnter.append("rect")
+    //       .attr('class', 'ghostCircle')
+    //       .attr("x", 0) //<-- x is taken care of by translate
+    //       .attr("y", -20/2) //<-- just use y to center the rect
+    //       .attr("width", 20)
+    //       .attr("height", 20);
+    // }
     var nodeUpdate = nodeEnter.merge(node);
 
     nodeUpdate.transition()
@@ -193,6 +229,7 @@ export class TreeModel {
       d.x0 = d.x;
       d.y0 = d.y;
     });
+    
     // On exit reduce the opacity of text labels
     nodeExit.select('text')
       .style('fill-opacity', 1e-6);
@@ -384,14 +421,21 @@ export class TreeModel {
   }
 
   // Creates a curved (diagonal) path from parent to the child nodes
-  diagonalCurvedPath(s, d) {
+  diagonalCurvedPath(d, s) {
 
-    const path = `M ${s.y} ${s.x}
-            C ${(s.y + d.y) / 2} ${s.x},
-              ${(s.y + d.y) / 2} ${d.x},
-              ${d.y} ${d.x}`
+    // const path = `M ${s.y} ${s.x}
+    //         C ${(s.y + d.y) / 2} ${s.x},
+    //           ${(s.y + d.y) / 2} ${d.x},
+    //           ${d.y} ${d.x}`
 
-    return path
+              
+
+    // return path
+
+    return "M" + d.y + "," + d.x
+              + "C" + (s.y + 100) + "," + d.x
+              + " " + (s.y + 100) + "," + s.x
+              + " " + s.y + "," + s.x;
   }
 
   radialPoint(x, y) {
@@ -417,6 +461,7 @@ export class TreeModel {
   nodechanged(node){
     console.info("nodechanged default");
   }
+
   nodeselected(node){}
 
 }

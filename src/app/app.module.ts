@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { SlTreeComponent } from './sl-tree/sl-tree.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
