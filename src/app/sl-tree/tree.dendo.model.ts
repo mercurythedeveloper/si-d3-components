@@ -4,7 +4,10 @@ import * as d3 from 'd3';
 export class TreeModel {
 
   // Configurable Parameters
-  enableNodeDrag = false;
+  enableNodeDrag: boolean = false;
+
+  // must be set to true in case of hiearchical JSON input data
+  hierarchicalData: boolean = false;
   // -----------------------
   root: any;
   treeLayout: any;
@@ -19,8 +22,8 @@ export class TreeModel {
   nodeWidth: number = 1;
   nodeHeight: number = 1;
   nodeRadius: number = 10;
-  horizontalSeparationBetweenNodes: number = 10;
-  verticalSeparationBetweenNodes: number = 20;
+  horizontalSeparationBetweenNodes: number = 5;
+  verticalSeparationBetweenNodes: number = 5;
   nodeTextDistanceY: string = "20px";
   nodeTextDistanceX: number = 20;
 
@@ -71,10 +74,18 @@ export class TreeModel {
   }
 
   createTreeData(treeData: any){
-    this.root = d3.stratify<any>()
-          .id(function(d) { return d.id; })
-          .parentId(function(d) { return d.parent; })
-          (treeData)  ;
+    if(this.hierarchicalData){
+      this.root = d3.hierarchy(treeData);
+    }
+    else{
+      this.root = d3.stratify<any>()
+            // define data structure attribute that represets unique node identifier
+            .id(function(d) { return d.id; })
+            // define data strucutre attribute that represet parent node identifier 
+            .parentId(function(d) { return d.parent; })
+            (treeData)  ;
+    }
+    
     this.root.x0 = this.height / 2;
     this.root.y0 = 0;
 
