@@ -7,6 +7,12 @@
     stroke: steelblue;
     stroke-width: 2px;
   }
+
+  :host ::ng-deep .node path {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
   
   :host ::ng-deep .node text {
     font: 10px sans-serif;

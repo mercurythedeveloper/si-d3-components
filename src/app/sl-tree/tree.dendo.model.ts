@@ -120,6 +120,8 @@ export class TreeModel {
     let nodeTextX  = this.nodeTextDistanceX;
     let nodeTextY = this.nodeTextDistanceY;
 
+    
+
     nodes.forEach(function(d){ d.y = d.depth * 180});
 
     
@@ -137,12 +139,20 @@ export class TreeModel {
 
     // if(bRect){
     // This circle marks nodes that have child nodes
-    nodeEnter.append('circle')
-        .attr('class', 'node circle')
-        .attr('r', 1e-6)
-        .style("fill", function(d) {
-            return d._children ? "red" : "blue";
-        });
+    nodeEnter.append('path')
+        .attr('class', 'node path')
+        .attr('d', (d) => { 
+                        if (d.id %2 == 0)
+                          return this.rectCircle( 25);
+                        else
+                          
+                          return this.rectPath( 50, 50);
+                      }
+            )
+        // .attr('r', 1e-6)
+        // .style("fill", function(d) {
+        //     return d._children ? "red" : "blue";
+        // });
       
     // }
     // else{
@@ -161,6 +171,7 @@ export class TreeModel {
 
     // show node text left in case node has children, show right in case node has no children
     nodeEnter.append('text')
+        .attr('class', 'node text')
         .attr("dy", nodeTextY )
         .attr("dx", function(d) {
           
@@ -422,24 +433,37 @@ export class TreeModel {
 
   // Creates a curved (diagonal) path from parent to the child nodes
   diagonalCurvedPath(d, s) {
-
-    // const path = `M ${s.y} ${s.x}
-    //         C ${(s.y + d.y) / 2} ${s.x},
-    //           ${(s.y + d.y) / 2} ${d.x},
-    //           ${d.y} ${d.x}`
-
-              
-
-    // return path
-
     return "M" + d.y + "," + d.x
               + "C" + (s.y + 100) + "," + d.x
               + " " + (s.y + 100) + "," + s.x
               + " " + s.y + "," + s.x;
   }
 
+  rectPath( rectWidth: number, rectHeight: number){
+    // svg path
+    // Mx,y - move to
+    // H - draw horizontal line
+    // V - draw vertical line
+    // L - draw a line from current position to position ( x, y) defined with following values
+    // M10 10 H 90 V 90 H 10 L 10 10
+    let maxX = rectWidth / 2;
+    let maxY = rectHeight / 2;
+    let minX = -1 * maxX;
+    let minY = -1 * maxY;
+    return `M${minX} ${minY} H ${maxX} V ${maxY} H ${minX} L ${minX} ${minY}`;
+  }
+
+  rectCircle( radius: number){
+    // a  rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
+    //    dx, dy - where the line stroke will end
+    //    large-arc-flag. It simply determines if the arc should be greater than or less than 180 degrees; in the end
+    // Mx,y - move to
+    return `M${-1*radius},0a${radius},${radius} 0 1,0 ${2*radius},0a${radius},${radius} 0 1,0 ${-2*radius},0`;
+  }
+
   radialPoint(x, y) {
     return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
+    
   }
 
   addNode(newNode: any){
