@@ -16,12 +16,11 @@ import { AngularD3TreeLibService } from './angular-d3-tree-lib.service';
 
 export class SlTreeComponent implements OnInit, OnChanges {
 
-  // @ViewChild("ngsvg", {read: ElementRef}) ngsvg: ElementRef;
-
   @ViewChild("chart", {read: ElementRef}) chartContainer: ElementRef;
   @Output() onNodeChanged: EventEmitter<any>= new EventEmitter();
   @Output() onNodeSelected: EventEmitter<any>= new EventEmitter();
   @Input() private treeData: any= [];
+  @Input() private enableNodeDrag: boolean = false;
 
   constructor( private treeService: AngularD3TreeLibService ) { 
 
@@ -45,7 +44,7 @@ export class SlTreeComponent implements OnInit, OnChanges {
   
   seedTree(){
     if(!!this.treeData){
-      this.treeService.createChart(this.chartContainer, this.treeData);
+      this.treeService.createChart(this.chartContainer, this.treeData, this.enableNodeDrag);
       this.treeService.update();
     }
   }

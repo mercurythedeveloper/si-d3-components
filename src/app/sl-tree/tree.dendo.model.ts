@@ -3,6 +3,9 @@ import * as d3 from 'd3';
 /* based on http://bl.ocks.org/robschmuecker/7880033 */
 export class TreeModel {
 
+  // Configurable Parameters
+  enableNodeDrag = false;
+  // -----------------------
   root: any;
   treeLayout: any;
   svg: any;
@@ -229,12 +232,22 @@ export class TreeModel {
     nodeExit.select('text')
       .style('fill-opacity', 1e-6);
 
-    nodeEnter
-      .call(this.dragBehaviour())
-      .on('click', function(d){
-        treeModel.click(d, this);
-        treeModel.update(d);
-      });
+    
+    if(this.enableNodeDrag){
+      nodeEnter
+        .call(this.dragBehaviour())
+        .on('click', function(d){
+          treeModel.click(d, this);
+          treeModel.update(d);
+        });
+    }
+    else{
+      nodeEnter
+        .on('click', function(d){
+          treeModel.click(d, this);
+          treeModel.update(d);
+        });
+    }
   }
 
   dragBehaviour(){

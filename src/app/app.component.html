@@ -1,6 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <si-sl-tree
-[(treeData)]="data"
+  [(treeData)]="data"
   (onNodeChanged)="nodeUpdated($event)"
   (onNodeSelected)="nodeSelected($event)"
+  [enableNodeDrag]="false"
 ></si-sl-tree>

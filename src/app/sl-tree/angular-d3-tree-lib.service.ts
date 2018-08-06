@@ -9,9 +9,11 @@ export class AngularD3TreeLibService {
 
   constructor() { }
 
-  createChart(chartContainer: any, treeData: any): void {
+  createChart(chartContainer: any, treeData: any, enableNodeDrag: boolean = false): void {
     let element = chartContainer.nativeElement;
     element.innerHTML= "";
+    
+    this.treeModel.enableNodeDrag = enableNodeDrag;
     this.treeModel.addSvgToContainer(chartContainer);
 
     this.treeModel.createLayout();
