@@ -137,36 +137,19 @@ export class TreeModel {
             return "translate(" + source.y0 + "," + source.x0 + ")";
         });
 
-    // if(bRect){
+    
     // This circle marks nodes that have child nodes
     nodeEnter.append('path')
         .attr('class', 'node path')
         .attr('d', (d) => { 
                         if (d.id %2 == 0)
-                          return this.rectCircle( 25);
+                          return this.rectCircle( this.nodeRadius);
                         else
                           
-                          return this.rectPath( 50, 50);
+                          return this.rectPath( this.nodeRadius*1.8, this.nodeRadius*1.8);
                       }
             )
-        // .attr('r', 1e-6)
-        // .style("fill", function(d) {
-        //     return d._children ? "red" : "blue";
-        // });
-      
-    // }
-    // else{
-    //   nodeEnter.append("rect")
-    //       .attr('class', 'node circle')
-    //       .attr("x", 0) //<-- x is taken care of by translate
-    //       .attr("y", -20/2) //<-- just use y to center the rect
-    //       .attr("width", 20)
-    //       .attr("height", 20)
-    //       .style("fill", function(d) {
-    //         return d._children ? "red" : "blue";
-    //       });
-          
-    // }
+       
 
 
     // show node text left in case node has children, show right in case node has no children
@@ -184,14 +167,22 @@ export class TreeModel {
               return d.data.name || d.data.description || d.id;
             });
 
-    // if(bRect){
+    
       // This circle is node symbol circle    
-      nodeEnter.append("circle")
+      nodeEnter.append("path")
           .attr('class', 'ghostCircle')
-          .attr("r", this.nodeRadius*2)
+          //.attr("r", this.nodeRadius*2)
           .attr("opacity", 0.2) // change this to zero to hide the target area
           .style("fill", "blue")
           .attr('pointer-events', 'mouseover')
+          .attr('d', (d) => { 
+                        if (d.id %2 == 0)
+                          return this.rectCircle( this.nodeRadius*2);
+                        else
+                          
+                          return this.rectPath( this.nodeRadius*1.8*2, this.nodeRadius*1.8*2);
+                      }
+          )
           .on("mouseover", function(node) {
               treeModel.overCircle(node);
               this.classList.add("over");
@@ -200,15 +191,8 @@ export class TreeModel {
               treeModel.outCircle(node);
               this.classList.remove("over");
           });
-    // }
-    // else{
-    //   nodeEnter.append("rect")
-    //       .attr('class', 'ghostCircle')
-    //       .attr("x", 0) //<-- x is taken care of by translate
-    //       .attr("y", -20/2) //<-- just use y to center the rect
-    //       .attr("width", 20)
-    //       .attr("height", 20);
-    // }
+
+      
     var nodeUpdate = nodeEnter.merge(node);
 
     nodeUpdate.transition()
@@ -217,7 +201,7 @@ export class TreeModel {
           return "translate(" + d.y + "," + d.x + ")";
        });
 
-    nodeUpdate.select('circle.node')
+    nodeUpdate.select('path.node')
       .attr('r', this.nodeRadius)
       .style("fill", function(d) {
           return d._children ? "lightsteelblue" : "#fff";
