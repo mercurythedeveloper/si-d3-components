@@ -7,7 +7,9 @@ import { AngularD3TreeLibService } from './angular-d3-tree-lib.service';
   selector: 'si-sl-tree',
   // templateUrl: './sl-tree.component.html',
   template: `
-    <div
+  Ha: <i class="fa fa-cog fa-spin" >
+  </i> d 
+  <div
       class="d3-chart"
       #chart></div>
   `,

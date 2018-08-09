@@ -142,16 +142,14 @@ export class TreeModel {
     var node = this.svg.selectAll('g.node')
         .data(nodes, function(d) {return d.id || (d.id = ++this.i); });
 
-    let bRect = node.id % 2 == 0;
-
     // Set each node g element  
     var nodeEnter = node.enter().append('g')
         .attr('class', 'node')
         .attr("transform", function(d) {
             return "translate(" + source.y0 + "," + source.x0 + ")";
-        });
-
-    
+        })
+        
+        
     // This circle marks nodes that have child nodes
     nodeEnter.append('path')
         .attr('class', 'node path')
@@ -163,8 +161,29 @@ export class TreeModel {
                           return this.rectPath( this.nodeRadius*1.8, this.nodeRadius*1.8);
                       }
             )
-       
+        
+    // Node Icon
+    nodeEnter.append('text')
+        .attr('style', 'font-family: FontAwesome')
+        .attr('class', 'nodeIcon')
+        .attr('text-anchor', 'middle')
+        .attr('alignment-baseline', 'middle')
+        .attr('x', '0')
+        .attr('y', '0')
+        // .attr('font-size', function(d) { return d.size+'em'} )
+        .text(function(d) { 
+                // debugger;
+                if( d.data.hasOwnProperty('nodeIcon')){
+                  return d.data.nodeIcon;
+                }
+                else{
+                  return '\uf2c0';
+                }
+        }); 
+        
+        
 
+           
 
     // show node text left in case node has children, show right in case node has no children
     nodeEnter.append('text')
@@ -179,8 +198,10 @@ export class TreeModel {
         })
         .text(function(d){
               return d.data.name || d.data.description || d.id;
-            });
-
+            })
+            
+            ;
+      
     
       // This circle is node symbol circle    
       nodeEnter.append("path")

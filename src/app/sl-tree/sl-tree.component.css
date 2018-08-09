@@ -8,6 +8,12 @@
     stroke-width: 2px;
   }
 
+  :host ::ng-deep .nodeIcon{
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 0.5px;
+  }
+
   :host ::ng-deep .node path {
     fill: #fff;
     stroke: steelblue;
