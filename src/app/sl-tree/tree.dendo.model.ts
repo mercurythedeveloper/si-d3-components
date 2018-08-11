@@ -23,9 +23,22 @@ export class TreeModel {
   nodeHeight: number = 1;
   nodeRadius: number = 10;
   horizontalSeparationBetweenNodes: number = 5;
-  verticalSeparationBetweenNodes: number = 5;
+  verticalSeparationBetweenNodes: number = -1;
   nodeTextDistanceY: string = "20px";
   nodeTextDistanceX: number = 20;
+
+  // the distance between tree levels
+  treeLevelDistance: number = 100;
+
+  // parameter that dtermines correct calculation of tree node link curve rendering
+  // calculated in constructor from treeLevelDistance
+  diagonalCurveRatio: number = 100;
+
+  // separation between tree nodes with the same parent node in pixels
+  siblingNodeSeparation: number = 20;
+
+  // separation between tree nodes with different parent node in pixels
+  nodeSeparation: number = 20;
 
   dragStarted: boolean;
   draggingNode: any;
@@ -35,7 +48,10 @@ export class TreeModel {
   selectedNodeByClick: any;
   previousClickedDomNode: any;
 
-  constructor(){}
+  constructor(){
+    //this.treeLevelDistance = treeLevelDistane;
+    this.diagonalCurveRatio = 100 * this.treeLevelDistance / 180;
+  }
 
   addSvgToContainer(chartContainer: any){
     let element = chartContainer.nativeElement;
@@ -43,7 +59,17 @@ export class TreeModel {
     this.width = element.offsetWidth - this.margin.left - this.margin.right;
     this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
 
+    
+
     this.svg = d3.select(element).append('svg')
+      // .data(d3.entries(
+      //   {"top-to-bottom": {
+      //     size: [50, 50],
+      //     x: function(d) { return d.x; },
+      //     y: function(d) { return d.y; }
+      //   }
+      // })
+      // )
       .attr('width', element.offsetWidth)
       .attr('height', element.offsetHeight)
       .append("g")
@@ -70,7 +96,7 @@ export class TreeModel {
     this.treeLayout = d3.tree()
       .size([this.height, this.width])
       .nodeSize([this.nodeWidth + this.horizontalSeparationBetweenNodes, this.nodeHeight + this.verticalSeparationBetweenNodes])
-      .separation((a,b)=>{return a.parent == b.parent ? 10 : 20});
+      .separation((a,b)=>{return a.parent == b.parent ? this.siblingNodeSeparation : this.nodeSeparation});
   }
 
   createTreeData(treeData: any){
@@ -132,11 +158,10 @@ export class TreeModel {
     let i = 0;
     let treeModel= this;
     let nodeTextX  = this.nodeTextDistanceX;
-    let nodeTextY = this.nodeTextDistanceY;
-
+    let nodeTextY = this.nodeTextDistanceY; 
     
 
-    nodes.forEach(function(d){ d.y = d.depth * 180});
+    nodes.forEach((d) => { d.y = d.depth * this.treeLevelDistance});
 
     
     var node = this.svg.selectAll('g.node')
@@ -463,8 +488,8 @@ export class TreeModel {
   // Creates a curved (diagonal) path from parent to the child nodes
   diagonalCurvedPath(d, s) {
     return "M" + d.y + "," + d.x
-              + "C" + (s.y + 100) + "," + d.x
-              + " " + (s.y + 100) + "," + s.x
+              + "C" + (s.y + this.diagonalCurveRatio) + "," + d.x
+              + " " + (s.y + this.diagonalCurveRatio) + "," + s.x
               + " " + s.y + "," + s.x;
   }
 
