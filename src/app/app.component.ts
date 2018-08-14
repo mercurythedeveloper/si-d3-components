@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 
 // import { AngularD3TreeLibService } from 'angular-d3-tree-lib';
-import dataTreeSimple from '../assets/data-tree-simple';
+// import dataTreeSimple from '../assets/data-tree-simple';
+import dataTreeSimple from '../assets/si-sample-location';
 
 @Component({
   selector: 'app-root',

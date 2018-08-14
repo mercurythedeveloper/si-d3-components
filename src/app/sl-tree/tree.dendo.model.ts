@@ -24,11 +24,15 @@ export class TreeModel {
   nodeRadius: number = 10;
   horizontalSeparationBetweenNodes: number = 5;
   verticalSeparationBetweenNodes: number = -1;
-  nodeTextDistanceY: string = "20px";
-  nodeTextDistanceX: number = 20;
+
+  // vertical distance between node and underlying text
+  nodeTextDistanceY: string = "25px";
+
+  // horizontal distance between node and undelying text
+  nodeTextDistanceX: number = 0;
 
   // the distance between tree levels
-  treeLevelDistance: number = 100;
+  treeLevelDistance: number = 130;
 
   // parameter that dtermines correct calculation of tree node link curve rendering
   // calculated in constructor from treeLevelDistance
@@ -62,14 +66,14 @@ export class TreeModel {
     
 
     this.svg = d3.select(element).append('svg')
-      // .data(d3.entries(
-      //   {"top-to-bottom": {
-      //     size: [50, 50],
-      //     x: function(d) { return d.x; },
-      //     y: function(d) { return d.y; }
-      //   }
-      // })
-      // )
+      .data(d3.entries(
+        {"top-to-bottom": {
+          size: [50, 50],
+          x: function(d) { return d.x; },
+          y: function(d) { return d.y; }
+        }
+      })
+      )
       .attr('width', element.offsetWidth)
       .attr('height', element.offsetHeight)
       .append("g")
@@ -205,10 +209,6 @@ export class TreeModel {
                   return '\uf2c0';
                 }
         }); 
-        
-        
-
-           
 
     // show node text left in case node has children, show right in case node has no children
     nodeEnter.append('text')
@@ -226,9 +226,8 @@ export class TreeModel {
             })
             
             ;
-      
     
-      // This circle is node symbol circle    
+      // This circle is node hover symbol circle    
       nodeEnter.append("path")
           .attr('class', 'ghostCircle')
           //.attr("r", this.nodeRadius*2)
@@ -253,6 +252,7 @@ export class TreeModel {
           });
 
       
+
     var nodeUpdate = nodeEnter.merge(node);
 
     nodeUpdate.transition()
@@ -276,7 +276,7 @@ export class TreeModel {
         .remove();
 
     // On exit reduce the node circles size to 0
-    nodeExit.select('circle')
+    nodeExit.select('path')
       .attr('r', 1e-6);
 
     // Store the old positions for transition.
@@ -288,6 +288,7 @@ export class TreeModel {
     // On exit reduce the opacity of text labels
     nodeExit.select('text')
       .style('fill-opacity', 1e-6);
+      // .style('color', 'red');
 
     
     if(this.enableNodeDrag){
@@ -467,6 +468,7 @@ export class TreeModel {
   }
 
   click(d, domNode) {
+    // debugger;
     if(this.previousClickedDomNode)
       this.previousClickedDomNode.classList.remove("selected");
     if (d.children) {
@@ -479,6 +481,7 @@ export class TreeModel {
       d._children = null;
 
       domNode.classList.add("selected");
+      
     }
     this.selectedNodeByClick= d;
     this.previousClickedDomNode= domNode;

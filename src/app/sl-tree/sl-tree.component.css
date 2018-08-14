@@ -14,9 +14,23 @@
     stroke-width: 0.5px;
   }
 
+  /* Selected node icon class */
+  :host ::ng-deep .selected .nodeIcon{
+    fill: #fff;
+    stroke: red;
+    stroke-width: 0.5px;
+  }
+
   :host ::ng-deep .node path {
     fill: #fff;
     stroke: steelblue;
+    stroke-width: 2px;
+  }
+
+  /* Selected node vector SVG symbol class */
+  :host ::ng-deep .selected path {
+    fill: #fff;
+    stroke: red;
     stroke-width: 2px;
   }
   
@@ -35,7 +49,12 @@
   }
 
   :host ::ng-deep .selected text{
-    stroke-width: 2px !important;
+    /* stroke-width: 2px !important; */
+    fill: rgb(187, 97, 14);
+  }
+
+  :host ::ng-deep .selected{
+    /* stroke-width: 2px !important; */
     fill: rgb(187, 97, 14);
   }
   
