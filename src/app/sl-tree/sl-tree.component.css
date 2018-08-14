@@ -12,6 +12,7 @@
     fill: #fff;
     stroke: steelblue;
     stroke-width: 0.5px;
+    cursor: pointer;
   }
 
   /* Selected node icon class */
@@ -19,6 +20,7 @@
     fill: #fff;
     stroke: red;
     stroke-width: 0.5px;
+    cursor: pointer;
   }
 
   :host ::ng-deep .node path {
