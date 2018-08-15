@@ -3,15 +3,15 @@
     min-height:600px;
   }
   :host ::ng-deep .node circle {
-    fill: #fff;
-    stroke: steelblue;
-    stroke-width: 2px;
+    /* fill: #fff;
+    stroke: steelblue;*/
+    stroke-width: 2px; 
   }
 
   :host ::ng-deep .nodeIcon{
     fill: #fff;
-    stroke: steelblue;
-    stroke-width: 0.5px;
+    stroke: #fff;
+    stroke-width: 0px;
     cursor: pointer;
   }
 
@@ -19,6 +19,20 @@
   :host ::ng-deep .selected .nodeIcon{
     fill: #fff;
     stroke: red;
+    stroke-width: 0.5px;
+    cursor: pointer;
+  }
+
+  :host ::ng-deep .nodeADD{
+    fill: green;
+    stroke: green;
+    stroke-width: 0.5px;
+    cursor: pointer;
+  }
+
+  :host ::ng-deep .nodeNONE{
+    fill: darkgray;
+    stroke: darkgray;
     stroke-width: 0.5px;
     cursor: pointer;
   }

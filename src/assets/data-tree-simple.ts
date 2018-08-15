@@ -1,6 +1,6 @@
 const dataTreeSimple= {
   "result": [
-    {"id":"1","description":"Prvi node","nodeIcon": "\uf2cb"},
+    {"id":"1","description":"Prvi node","nodeIcon": "\uf2cb", "action": "ADD", , "type": "CFS"},
     {"id":"2","description":"2","parent":"1","nodeIcon": "\uf2cb"},
     {"id":"3","description":"3","parent":"1"},
     {"id":"4","description":"4","parent":"2"},

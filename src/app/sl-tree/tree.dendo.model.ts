@@ -1,5 +1,10 @@
 import * as d3 from 'd3';
 
+const SQUARE: string = "square";
+const CIRCLE: string = "circle";
+
+const DEFAULT_NODE_ICON: string = "\uf013";;
+
 /* based on http://bl.ocks.org/robschmuecker/7880033 */
 export class TreeModel {
 
@@ -129,6 +134,7 @@ export class TreeModel {
       d.children = null
     }
   }
+
   expand(d) {
     if(d._children) {
       d.children = d._children
@@ -136,6 +142,7 @@ export class TreeModel {
       d.children = null
     }
   }
+
   expandAndFixHeight(d, newParent) {
     d.height= newParent.height-1;
     d.depth= newParent.depth+1;
@@ -148,6 +155,7 @@ export class TreeModel {
       d.children.map((child)=>this.expandAndFixHeight(child, d));
     }
   }
+
   update(source) {
     const treeData = this.treeLayout(this.root);
 
@@ -181,16 +189,35 @@ export class TreeModel {
         
     // This circle marks nodes that have child nodes
     nodeEnter.append('path')
-        .attr('class', 'node path')
-        .attr('d', (d) => { 
-                        if (d.id %2 == 0)
-                          return this.rectCircle( this.nodeRadius);
+        .attr("opacity", (d) =>{
+                  // debugger;
+                  return d._children ? "1" : "0.75";  
+          } ) 
+        .style("fill", (d) => { 
+                        if (d.data.nodeColor != undefined)
+                          return d.data.nodeColor;
                         else
-                          
-                          return this.rectPath( this.nodeRadius*1.8, this.nodeRadius*1.8);
+                          return "darkgray";
                       }
             )
-        
+        .style("stroke", (d) => { 
+              if (d.data.nodeColor != undefined)
+                return d.data.nodeColor;
+              else
+                return "darkgray";
+            }
+        )
+        .attr('d', (d) => { 
+                        if (d.data.nodeSymbol == CIRCLE)
+                          return this.rectCircle( this.nodeRadius);
+                        else if(d.data.nodeSymbol == SQUARE)
+                          return this.rectPath( this.nodeRadius*1.8, this.nodeRadius*1.8);
+                        else
+                          return this.rectCircle( this.nodeRadius);
+                      }
+            )
+
+
     // Node Icon
     nodeEnter.append('text')
         .attr('style', 'font-family: FontAwesome')
@@ -206,7 +233,7 @@ export class TreeModel {
                   return d.data.nodeIcon;
                 }
                 else{
-                  return '\uf2c0';
+                  return DEFAULT_NODE_ICON;
                 }
         }); 
 
@@ -230,17 +257,23 @@ export class TreeModel {
       // This circle is node hover symbol circle    
       nodeEnter.append("path")
           .attr('class', 'ghostCircle')
-          //.attr("r", this.nodeRadius*2)
           .attr("opacity", 0.2) // change this to zero to hide the target area
-          .style("fill", "blue")
+          .style("fill", (d) => { 
+                              if (d.data.nodeColor != undefined)
+                                return d.data.nodeColor;
+                              else
+                                return "darkgray";
+                            }
+          )
           .attr('pointer-events', 'mouseover')
           .attr('d', (d) => { 
-                        if (d.id %2 == 0)
-                          return this.rectCircle( this.nodeRadius*2);
-                        else
-                          
-                          return this.rectPath( this.nodeRadius*1.8*2, this.nodeRadius*1.8*2);
-                      }
+                              if (d.data.nodeSymbol == CIRCLE)
+                                return this.rectCircle( this.nodeRadius*2);
+                              else if(d.data.nodeSymbol == SQUARE)
+                                return this.rectPath( this.nodeRadius*2.8, this.nodeRadius*2.8);
+                              else
+                                return this.rectCircle( this.nodeRadius*2);
+                            }
           )
           .on("mouseover", function(node) {
               treeModel.overCircle(node);
@@ -261,11 +294,16 @@ export class TreeModel {
           return "translate(" + d.y + "," + d.x + ")";
        });
 
-    nodeUpdate.select('path.node')
+    // Mark nodes that are not expanded and have child nodes
+    nodeUpdate.select('path')
       .attr('r', this.nodeRadius)
-      .style("fill", function(d) {
-          return d._children ? "lightsteelblue" : "#fff";
-      })
+      .attr("opacity", (d) =>{
+        // debugger;
+        return d._children ? "1" : "0.75";  
+      } ) 
+      // .style("fill", function(d) {
+      //     return d._children ? "lightsteelblue" : "#fff";
+      // })
       .attr('cursor', 'pointer');
 
     var nodeExit = node.exit().transition()
@@ -469,22 +507,25 @@ export class TreeModel {
 
   click(d, domNode) {
     // debugger;
-    if(this.previousClickedDomNode)
-      this.previousClickedDomNode.classList.remove("selected");
+    if(this.previousClickedDomNode){
+      // this.previousClickedDomNode.classList.remove("selected");
+      d3.select(this.previousClickedDomNode).select('.ghostCircle').attr('class', 'ghostCircle');
+    }
     if (d.children) {
         d._children = d.children;
         d.children = null;
 
-        domNode.classList.remove("selected");
+        // domNode.classList.remove("selected");
     } else {
       d.children = d._children;
       d._children = null;
 
-      domNode.classList.add("selected");
+      // domNode.classList.add("selected");
       
     }
     this.selectedNodeByClick= d;
     this.previousClickedDomNode= domNode;
+    d3.select(domNode).select('.ghostCircle').attr('class', 'ghostCircle show');
     this.nodeselected(d);
   }
 
