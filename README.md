@@ -6,6 +6,18 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+
+## Upgrade Font Awesome
+npm config delete "@fortawesome:registry"
+npm config delete "//npm.fontawesome.com/:_authToken
+
+yarn add @fortawesome/fontawesome-svg-core   
+yarn add @fortawesome/free-solid-svg-icons   
+yarn add @fortawesome/angular-fontawesome
+
+Modify index.html link to FA css
+Modify angular.json styles and script
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
