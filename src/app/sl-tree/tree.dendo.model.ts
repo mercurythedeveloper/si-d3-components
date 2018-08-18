@@ -298,12 +298,8 @@ export class TreeModel {
     nodeUpdate.select('path')
       .attr('r', this.nodeRadius)
       .attr("opacity", (d) =>{
-        // debugger;
         return d._children ? "1" : "0.75";  
       } ) 
-      // .style("fill", function(d) {
-      //     return d._children ? "lightsteelblue" : "#fff";
-      // })
       .attr('cursor', 'pointer');
 
     var nodeExit = node.exit().transition()

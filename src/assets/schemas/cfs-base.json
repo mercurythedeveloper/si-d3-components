@@ -1,0 +1,53 @@
+{
+    "$id": "http://meta-oss.com/cfs-base.json",
+    "type": "object",
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+      "id": {
+        "$id": "/properties/id",
+        "type": "integer",
+        "title": "The Id Schema ",
+        "default": 0,
+        "examples": [
+          1
+        ]
+      },
+      "specificationId": {
+        "$id": "/properties/specificationId",
+        "type": "string",
+        "title": "The Specificationid Schema ",
+        "default": "",
+        "examples": [
+          "2"
+        ]
+      },
+      "specificationName": {
+        "$id": "/properties/specificationName",
+        "type": "string",
+        "title": "The Specificationname Schema ",
+        "default": "",
+        "examples": [
+          "Basic Customer Facing Service"
+        ]
+      },
+      "templateId": {
+        "$id": "/properties/templateId",
+        "type": "string",
+        "title": "The Templateid Schema ",
+        "default": "",
+        "examples": [
+          "3"
+        ]
+      },
+      "templateName": {
+        "$id": "/properties/templateName",
+        "type": "string",
+        "title": "The Templatename Schema ",
+        "default": "",
+        "examples": [
+          "Basic Customer Facing Service"
+        ]
+      }
+    }
+  }

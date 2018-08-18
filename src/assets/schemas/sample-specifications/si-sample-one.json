@@ -1,0 +1,96 @@
+ {
+    2   "$id": "http://example.com/example.json", 
+    3   "type": "object", 
+    4   "definitions": {}, 
+    5   "$schema": "http://json-schema.org/draft-07/schema#", 
+    6   "properties": {
+    7     "location": {
+    8       "$id": "/properties/location", 
+    9       "type": "object", 
+   10       "properties": {
+   11         "id": {
+   12           "$id": "/properties/location/properties/id", 
+   13           "type": "integer", 
+   14           "title": "The Id Schema ", 
+   15           "default": 0, 
+   16           "examples": [
+   17             1
+   18           ]
+   19         }, 
+   20         "customerId": {
+   21           "$id": "/properties/location/properties/customerId", 
+   22           "type": "string", 
+   23           "title": "The Customerid Schema ", 
+   24           "default": "", 
+   25           "examples": [
+   26             ""
+   27           ]
+   28         }, 
+   29         "adapterID": {
+   30           "$id": "/properties/location/properties/adapterID", 
+   31           "type": "string", 
+   32           "title": "The Adapterid Schema ", 
+   33           "default": "", 
+   34           "examples": [
+   35             ""
+   36           ]
+   37         }, 
+   38         "cfsInstances": {
+   39           "$id": "/properties/location/properties/cfsInstances", 
+   40           "type": "array", 
+   41           "items": {
+   42             "$id": "/properties/location/properties/cfsInstances/items", 
+   43             "type": "object", 
+   44             "properties": {
+   45               "id": {
+   46                 "$id": "/properties/location/properties/cfsInstances/items/properties/id", 
+   47                 "type": "integer", 
+   48                 "title": "The Id Schema ", 
+   49                 "default": 0, 
+   50                 "examples": [
+   51                   1
+   52                 ]
+   53               }, 
+   54               "specificationId": {
+   55                 "$id": "/properties/location/properties/cfsInstances/items/properties/specificationId", 
+   56                 "type": "string", 
+   57                 "title": "The Specificationid Schema ", 
+   58                 "default": "", 
+   59                 "examples": [
+   60                   ""
+   61                 ]
+   62               }, 
+   63               "specificationName": {
+   64                 "$id": "/properties/location/properties/cfsInstances/items/properties/specificationName", 
+   65                 "type": "string", 
+   66                 "title": "The Specificationname Schema ", 
+   67                 "default": "", 
+   68                 "examples": [
+   69                   ""
+   70                 ]
+   71               }, 
+   72               "templateId": {
+   73                 "$id": "/properties/location/properties/cfsInstances/items/properties/templateId", 
+   74                 "type": "string", 
+   75                 "title": "The Templateid Schema ", 
+   76                 "default": "", 
+   77                 "examples": [
+   78                   ""
+   79                 ]
+   80               }, 
+   81               "templateName": {
+   82                 "$id": "/properties/location/properties/cfsInstances/items/properties/templateName", 
+   83                 "type": "string", 
+   84                 "title": "The Templatename Schema ", 
+   85                 "default": "", 
+   86                 "examples": [
+   87                   ""
+   88                 ]
+   89               }
+   90             }
+   91           }
+   92         }
+   93       }
+   94     }
+   95   }
+   96 }
