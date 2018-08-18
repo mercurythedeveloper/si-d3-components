@@ -1,0 +1,142 @@
+{
+    "$id": "http://meta-oss.com/si-tree-structure.json",
+    "type": "object",
+    "title" : "Meta OSS - Service Location Tree Structure JSON schema",
+    "description": "Schema defines model for specifying service location and CFS-RFS tree specification. It is used by modeler SI module that defines relation between services and each specific service model. This schema defines model which will is used for defining specific service location models. This model is used by modeler and model that is resutl of modeler will be used by instance creator and validator.",
+    "definitions": {
+      "service" : {
+        
+        "type": "object",
+        "title" : "Basic Service (CFS or RFS) Class for Tree Structure",
+        "properties": {
+          "name": {
+            
+            "type": "string",
+            
+            "title": "Service Specification Name",
+            "description": "Service Specification Name",
+            "default": "",
+            "examples": [
+              ""
+            ]
+          },
+          "version": {
+            
+            "type": "string",
+            "title": "Service Specification Version",
+            "default": "",
+            "examples": [
+              ""
+            ]
+          },
+          "schemaUri": {
+            
+            "type": "string",
+            "title": "Service Specification Schema Uri",
+            "description": "This attribute defines specific model for each service. Specific model will be defined in external JSON schema and automatically merged with this data",
+            "default": "",
+            "examples": [
+              ""
+            ]
+          },
+          "minSize": {
+            
+            "type": "integer",
+            "title": "Minimum Number of Service Instance Appearances",
+            "default": 1,
+            "examples": [
+              1
+            ]
+          },
+          "maxSize": {
+            
+            "type": "integer",
+            "title": "Maximum Number of Service Instance Appearances",
+            "default": 1,
+            "examples": [
+              1
+            ]
+          }
+        },
+        "required": [
+          "name", "version", "maxSize", "minSize", "schemaUri"
+        ]
+      },
+      "cfss" : {
+        "type" : "object",
+        "allOf": [
+          {"$ref" : "#/definitions/service"}
+        ],
+        "childCFSs": {
+            "type": "array",
+            "title": "Child Customer Facing Service Specifications",
+            "items": { "$ref" : "#/definitions/cfss"}
+        },
+        "childRFSs": {
+              "type": "array",
+              "title": "Child Resource Facing Service Specifications",
+              "items": { "$ref" : "#/definitions/rfss"}
+        },
+        "required": [
+          "childCFSs", "childRFSs"
+        ]
+      },
+      "rfss" : {
+        "type" : "object",
+        "allOf": [
+          {"$ref" : "#/definitions/service"}
+        ],
+        "childRFSs": {
+            "type": "array",
+            "title": "Child Resource Facing Service Specifications",
+            "items": { "$ref" : "#/definitions/rfss"}
+          }
+      }
+    },
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+      "location": {
+        
+        "type": "object",
+        "properties": {
+          "schemaUri": {
+            
+            "type": "string",
+            "title": "The Schemauri Schema ",
+            "default": "",
+            "examples": [
+              ""
+            ]
+          },
+          "name": {
+            
+            "type": "string",
+            "title": "The Name Schema ",
+            "default": "",
+            "examples": [
+              ""
+            ]
+          },
+          "version": {
+            
+            "type": "string",
+            "title": "The Version Schema ",
+            "default": "",
+            "examples": [
+              ""
+            ]
+          }
+        }
+      },
+      "cfsTree": {
+        
+        "type": "array",
+        "minLength" : 1,
+        "items": { "$ref" : "#/definitions/cfss"}
+        
+      }
+    },
+    "required": [
+      "location", "cfsTree"
+    ]
+  }
