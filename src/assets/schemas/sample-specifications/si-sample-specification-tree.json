@@ -1,0 +1,96 @@
+{
+	"location": {},
+    "cfsTree" : [
+      {
+        "name" : "Service Access",
+        "version": "1.0.0",
+        "maxSize" : 1,
+        "minSize" : 1,
+        "schemaUri" : "",
+        "childCFSs" : [
+          {
+            "name" : "Internet",
+            "version": "1.0.0",
+            "maxSize" : 1,
+            "minSize" : 1,
+            "schemaUri" : "",
+            "childCFSs" : [
+      			{
+                  "name" : "Internet Speed",
+                  "version": "1.0.0",
+                  "maxSize" : 1,
+                  "minSize" : 1,
+                  "schemaUri" : "",
+                  "childCFSs" : [],
+                  "childRFSs" : [],
+
+                }            
+            ],
+            "childRFSs" : [
+              {
+                "name" : "Modem",
+                "version": "1.0.0",
+            	"maxSize" : 1,
+            	"minSize" : 1,
+            	"schemaUri" : "",
+                "childRFSs" : []
+                
+              },
+              {
+                "name" : "WiFiPassword",
+                "version": "1.0.0",
+            	"maxSize" : 1,
+            	"minSize" : 1,
+            	"schemaUri" : "",
+                "childRFSs" : []
+                
+              },
+              {
+                "name" : "PPPoEAccount",
+                "version": "1.0.0",
+            	"maxSize" : 1,
+            	"minSize" : 1,
+            	"schemaUri" : "",
+                "childRFSs" : []
+                
+              }               
+            ]
+          }
+        ],
+        "childRFSs" : [
+			{
+            "name" : "HomePass",
+            "version": "1.0.0",
+            "maxSize" : 1,
+            "minSize" : 1,
+            "schemaUri" : "",
+            "childRFSs" : []
+          } ,
+          {
+            "name" : "Option82",
+            "version": "1.0.0",
+            "maxSize" : 1,
+            "minSize" : 1,
+            "schemaUri" : "",
+            "childRFSs" : []
+          } ,
+          {
+            "name" : "Self Care Account",
+            "version": "1.0.0",
+            "maxSize" : 1,
+            "minSize" : 1,
+            "schemaUri" : "",
+            "childRFSs" : []
+          } ,
+          {
+            "name" : "HDFPort",
+            "version": "1.0.0",
+            "maxSize" : 1,
+            "minSize" : 1,
+            "schemaUri" : "",
+            "childRFSs" : []
+          }
+        ]
+      }
+    ]
+}

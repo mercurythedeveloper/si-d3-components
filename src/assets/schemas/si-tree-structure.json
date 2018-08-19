@@ -4,7 +4,7 @@
     "title" : "Meta OSS - Service Location Tree Structure JSON schema",
     "description": "Schema defines model for specifying service location and CFS-RFS tree specification. It is used by modeler SI module that defines relation between services and each specific service model. This schema defines model which will is used for defining specific service location models. This model is used by modeler and model that is resutl of modeler will be used by instance creator and validator.",
     "definitions": {
-      "service" : {
+      "serviceSpecification" : {
         
         "type": "object",
         "title" : "Basic Service (CFS or RFS) Class for Tree Structure",
@@ -43,7 +43,7 @@
           "minSize": {
             
             "type": "integer",
-            "title": "Minimum Number of Service Instance Appearances",
+            "title": "Minimum Number of Active Service Instance Appearances",
             "default": 1,
             "examples": [
               1
@@ -52,7 +52,7 @@
           "maxSize": {
             
             "type": "integer",
-            "title": "Maximum Number of Service Instance Appearances",
+            "title": "Maximum Number of Active Service Instance Appearances",
             "default": 1,
             "examples": [
               1
@@ -63,35 +63,45 @@
           "name", "version", "maxSize", "minSize", "schemaUri"
         ]
       },
-      "cfss" : {
+      "cfsSpecification" : {
         "type" : "object",
         "allOf": [
-          {"$ref" : "#/definitions/service"}
+          {"$ref" : "#/definitions/serviceSpecification"}
         ],
-        "childCFSs": {
-            "type": "array",
-            "title": "Child Customer Facing Service Specifications",
-            "items": { "$ref" : "#/definitions/cfss"}
-        },
-        "childRFSs": {
+        "properties": {
+          "childCFSs": {
               "type": "array",
-              "title": "Child Resource Facing Service Specifications",
-              "items": { "$ref" : "#/definitions/rfss"}
+              "title": "Child Customer Facing Service Specifications",
+              "items": { "$ref" : "#/definitions/cfsSpecification"}
+          },
+          "childRFSs": {
+                "type": "array",
+                "title": "Child Resource Facing Service Specifications",
+                "items": { "$ref" : "#/definitions/rfsSpecification"}
+          }        
         },
+        
         "required": [
           "childCFSs", "childRFSs"
         ]
       },
-      "rfss" : {
+      "rfsSpecification" : {
         "type" : "object",
+        "additionalProperties": false,
         "allOf": [
-          {"$ref" : "#/definitions/service"}
+          {"$ref" : "#/definitions/serviceSpecification"}
         ],
-        "childRFSs": {
+        "properties": {
+          "childRFSs": {
             "type": "array",
             "title": "Child Resource Facing Service Specifications",
-            "items": { "$ref" : "#/definitions/rfss"}
+            "items": { "$ref" : "#/definitions/rfsSpecification"}
           }
+        },
+        "required": [
+          "childRFSs"
+        ]
+       
       }
     },
     "$schema": "http://json-schema.org/draft-07/schema#",
@@ -133,7 +143,7 @@
         
         "type": "array",
         "minLength" : 1,
-        "items": { "$ref" : "#/definitions/cfss"}
+        "items": { "$ref" : "#/definitions/cfsSpecification"}
         
       }
     },
