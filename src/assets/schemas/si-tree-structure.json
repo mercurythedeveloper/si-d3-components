@@ -25,6 +25,7 @@
             "type": "string",
             "title": "Service Specification Version",
             "default": "",
+            "pattern": "\\d+\\.\\d+\\.\\d+",
             "examples": [
               ""
             ]
