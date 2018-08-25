@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef, OnChanges, Output, EventEmitt
 import { TreeModel } from './tree.dendo.model';
 
 import { AngularD3TreeLibService } from './angular-d3-tree-lib.service';
+import *  as SIModel from '../interfaces/specificationTree'
+import { D3LinearTree } from '../interfaces/d3LinearTree'
+
 
 @Component({
   selector: 'si-sl-tree',
@@ -21,7 +24,8 @@ export class SlTreeComponent implements OnInit, OnChanges {
   @ViewChild("chart", {read: ElementRef}) chartContainer: ElementRef;
   @Output() onNodeChanged: EventEmitter<any>= new EventEmitter();
   @Output() onNodeSelected: EventEmitter<any>= new EventEmitter();
-  @Input() private treeData: any= [];
+  private _treeData: SIModel.SiTreeStructure;
+  private _d3TreeData: D3LinearTree;
   @Input() private enableNodeDrag: boolean = false;
 
   constructor( private treeService: AngularD3TreeLibService ) { 
@@ -36,8 +40,17 @@ export class SlTreeComponent implements OnInit, OnChanges {
     
   }
 
+  /**
+   * Tree data setter method
+   */
+  @Input()
+  set treeData(inputTreeData: SIModel.SiTreeStructure) {
+    this._treeData = inputTreeData;
+    this._d3TreeData = this.treeService.transformSiLocationData(this._treeData);
+  }
+
   ngOnInit() {
-    
+     
   }
 
   ngOnChanges(changes: any) {
@@ -45,8 +58,8 @@ export class SlTreeComponent implements OnInit, OnChanges {
   }
   
   seedTree(){
-    if(!!this.treeData){
-      this.treeService.createChart(this.chartContainer, this.treeData, this.enableNodeDrag);
+    if(!!this._d3TreeData){
+      this.treeService.createChart(this.chartContainer, this._d3TreeData.result, this.enableNodeDrag);
       this.treeService.update();
     }
   }

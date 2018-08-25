@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 // import { AngularD3TreeLibService } from 'angular-d3-tree-lib';
 // import dataTreeSimple from '../assets/data-tree-simple';
-import dataTreeSimple from '../assets/si-sample-location';
+// import dataTreeSimple from '../assets/si-sample-location';
+import dataTreeSimple2 from '../assets/si-sample-specification-tree';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,12 @@ import dataTreeSimple from '../assets/si-sample-location';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  data: any[];
-  //// in case of hierarchical data
-  //data: any;
+  data: any;
 
   selectedNode: any;
   constructor() {
-    this.data= dataTreeSimple.result;
+    // this.data= dataTreeSimple.result;
+    this.data = dataTreeSimple2;
 
     //// In case of hierarchical data
     //this.data= dataTreeSimple;

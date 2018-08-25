@@ -18,6 +18,9 @@ yarn add @fortawesome/angular-fontawesome
 Modify index.html link to FA css
 Modify angular.json styles and script
 
+## VSCode
+QT Paste JSON as Code - used for generating TypeScript interface from JSON schema
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.

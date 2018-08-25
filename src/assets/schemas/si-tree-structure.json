@@ -20,10 +20,44 @@
               ""
             ]
           },
+          "type": {
+            
+            "type": "string",
+            "title": "Service Specification Type",
+            "description": "Service Specification Type",
+            "default": "",
+            "enum": [
+              "RFS", "CFS"
+            ]
+          },
+          "id": {
+            
+            "type": "string",
+            
+            "title": "Service Specification Identifier",
+            "description": "Service Specification Identifier",
+            "default": "",
+            "examples": [
+              ""
+            ]
+          },
+          "icon": {
+            
+            "type": "string",
+            
+            "title": "Service Specification Icon",
+            "description": "Service Specification Icon",
+            "default": "\uf013",
+            "pattern": "^[0-9a-fA-F]{4}$",
+            "examples": [
+              ""
+            ]
+          },
           "version": {
             
             "type": "string",
             "title": "Service Specification Version",
+            "description": "Once service tree specification is finished and published to production it will receive version number. If there is requirement to change service tree specification, specification must be unlocked. When edited specification will automaticall receive new version number",
             "default": "",
             "pattern": "\\d+\\.\\d+\\.\\d+",
             "examples": [
@@ -44,6 +78,7 @@
             
             "type": "integer",
             "title": "Minimum Number of Active Service Instance Appearances",
+            "description": "Minimum Number of Active Service Instance Appearances",
             "default": 1,
             "examples": [
               1
@@ -53,6 +88,7 @@
             
             "type": "integer",
             "title": "Maximum Number of Active Service Instance Appearances",
+            "description": "Maximum Number of Active Service Instance Appearances",
             "default": 1,
             "examples": [
               1
@@ -60,11 +96,12 @@
           }
         },
         "required": [
-          "name", "version", "maxSize", "minSize", "schemaUri"
+          "name", "version", "maxSize", "minSize", "schemaUri", "id"
         ]
       },
       "cfsSpecification" : {
         "type" : "object",
+        "description": "Defines model for defining Customer Facing Specification - relationshios hierarchy and model",
         "allOf": [
           {"$ref" : "#/definitions/serviceSpecification"}
         ],
@@ -72,11 +109,13 @@
           "childCFSs": {
               "type": "array",
               "title": "Child Customer Facing Service Specifications",
+              "description": "Child Customer Facing Service Specifications",
               "items": { "$ref" : "#/definitions/cfsSpecification"}
           },
           "childRFSs": {
                 "type": "array",
                 "title": "Child Resource Facing Service Specifications",
+                "description": "Child Resource Facing Service Specifications",
                 "items": { "$ref" : "#/definitions/rfsSpecification"}
           }        
         },
@@ -87,7 +126,7 @@
       },
       "rfsSpecification" : {
         "type" : "object",
-        "additionalProperties": false,
+        "description": "Defines model for defining Resource Facing Specification - relationshios hierarchy and model",
         "allOf": [
           {"$ref" : "#/definitions/serviceSpecification"}
         ],
@@ -95,6 +134,7 @@
           "childRFSs": {
             "type": "array",
             "title": "Child Resource Facing Service Specifications",
+            "description": "Child Resource Facing Service Specifications",
             "items": { "$ref" : "#/definitions/rfsSpecification"}
           }
         },
@@ -113,7 +153,8 @@
           "schemaUri": {
             
             "type": "string",
-            "title": "The Schemauri Schema ",
+            "title": "Location specification JSON schema that defines model",
+            "description": "Location specification JSON schema that defines model",
             "default": "",
             "examples": [
               ""
@@ -122,7 +163,18 @@
           "name": {
             
             "type": "string",
-            "title": "The Name Schema ",
+            "title": "Location Specification Name",
+            "description": "Location Specification Name",
+            "default": "",
+            "examples": [
+              ""
+            ]
+          },
+          "id": {
+            
+            "type": "string",
+            "title": "Location Specification Identifier",
+            "description": "Location Specification Identifier",
             "default": "",
             "examples": [
               ""
@@ -131,7 +183,8 @@
           "version": {
             
             "type": "string",
-            "title": "The Version Schema ",
+            "title": "Location Specification Version",
+            "description": "Location Specification Version",
             "default": "",
             "examples": [
               ""
