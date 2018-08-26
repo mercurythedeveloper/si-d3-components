@@ -10,9 +10,7 @@
         "title" : "Basic Service (CFS or RFS) Class for Tree Structure",
         "properties": {
           "name": {
-            
             "type": "string",
-            
             "title": "Service Specification Name",
             "description": "Service Specification Name",
             "default": "",
@@ -21,7 +19,6 @@
             ]
           },
           "type": {
-            
             "type": "string",
             "title": "Service Specification Type",
             "description": "Service Specification Type",
@@ -31,9 +28,7 @@
             ]
           },
           "id": {
-            
             "type": "string",
-            
             "title": "Service Specification Identifier",
             "description": "Service Specification Identifier",
             "default": "",

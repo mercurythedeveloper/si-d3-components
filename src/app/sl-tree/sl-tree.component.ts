@@ -8,10 +8,7 @@ import { D3LinearTree } from '../interfaces/d3LinearTree'
 
 @Component({
   selector: 'si-sl-tree',
-  // templateUrl: './sl-tree.component.html',
   template: `
-  Ha: <i class="fa fa-cog fa-spin" >
-  </i> d 
   <div
       class="d3-chart"
       #chart></div>
@@ -53,8 +50,23 @@ export class SlTreeComponent implements OnInit, OnChanges {
      
   }
 
-  ngOnChanges(changes: any) {
+  /**
+   * Trigger tree render.
+   * Method is async because d3 rendering is in conflict with Angular Material components.
+   *    You need to delay your d3 code because the tab content isn't created until slightly after your controller runs. 
+   * @param changes 
+   */
+  async ngOnChanges(changes: any) {
+    await this.sleep(1000);
     this.seedTree();
+  }
+
+  /**
+   * Methods waits for given number of miliseconds
+   * @param ms 
+   */
+  sleep(ms = 0) {
+    return new Promise(r => setTimeout(r, ms));
   }
   
   seedTree(){

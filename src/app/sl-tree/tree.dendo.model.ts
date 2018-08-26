@@ -43,7 +43,9 @@ export class TreeModel {
   // calculated in constructor from treeLevelDistance
   diagonalCurveRatio: number = 100;
 
-  // separation between tree nodes with the same parent node in pixels
+  /** 
+   *  separation between tree nodes with the same parent node in pixels
+  */
   siblingNodeSeparation: number = 20;
 
   // separation between tree nodes with different parent node in pixels

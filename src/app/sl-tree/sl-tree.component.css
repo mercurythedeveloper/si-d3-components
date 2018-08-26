@@ -1,6 +1,6 @@
 .d3-chart {
-    width: 100%;
-    min-height:600px;
+    width: 2000px;
+    min-height:2000px;
   }
   :host ::ng-deep .node circle {
     /* fill: #fff;

@@ -1,7 +1,38 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<si-sl-tree
-  [(treeData)]="data"
-  (onNodeChanged)="nodeUpdated($event)"
-  (onNodeSelected)="nodeSelected($event)"
-  [enableNodeDrag]="false"
-></si-sl-tree>
+
+ <mat-toolbar>
+    <mat-icon class="example-icon left-menu-icon" (click)="leftmenu.toggle()">view_headline</mat-icon>
+    <span>Service Inventory (prototype)</span>
+    <!-- <mat-icon class="example-icon">favorite</mat-icon>
+    <mat-icon class="example-icon">delete</mat-icon> -->
+  </mat-toolbar>
+  <mat-drawer-container class="example-container" autosize>
+      <mat-drawer #leftmenu class="example-sidenav" mode="side">
+          <mat-list dense>
+              <mat-list-item> Pepper </mat-list-item>
+              <mat-list-item> Salt </mat-list-item>
+              <mat-list-item> Paprika </mat-list-item>
+             </mat-list>
+        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+        <button (click)="showFiller = !showFiller" mat-raised-button>
+          Toggle extra text
+        </button>
+      </mat-drawer>
+       
+      <mat-tab-group>
+        <mat-tab label="Administrator">
+          <div style="width:100%; height: 100%;">
+          <si-sl-tree
+            [(treeData)]="data"
+            (onNodeChanged)="nodeUpdated($event)"
+            (onNodeSelected)="nodeSelected($event)"
+            [enableNodeDrag]="false"
+          ></si-sl-tree>
+        </div>
+        </mat-tab>
+        <mat-tab label="Editor">
+          <h1>Some more tab content</h1>
+          <p>...</p>
+        </mat-tab>
+      </mat-tab-group>
+  </mat-drawer-container>
+

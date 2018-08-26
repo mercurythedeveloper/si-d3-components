@@ -21,6 +21,17 @@ Modify angular.json styles and script
 ## VSCode
 QT Paste JSON as Code - used for generating TypeScript interface from JSON schema
 
+## Angular Material
+npm install --save @angular/material @angular/cdk @angular/animations
+
+To be able to use the icons, you have to add a link tag in src/index.html:
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+## Flex Layout Module
+npm install @angular/flex-layout@latest --save
+
+
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
