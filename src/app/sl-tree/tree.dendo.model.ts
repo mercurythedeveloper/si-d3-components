@@ -190,6 +190,7 @@ export class TreeModel {
         
         
     // This circle marks nodes that have child nodes
+    // main node symbol
     nodeEnter.append('path')
         .attr("opacity", (d) =>{
                   // debugger;
@@ -211,14 +212,26 @@ export class TreeModel {
         )
         .attr('d', (d) => { 
                         if (d.data.nodeSymbol == CIRCLE)
-                          return this.rectCircle( this.nodeRadius);
+                          return this.circlePath( this.nodeRadius);
                         else if(d.data.nodeSymbol == SQUARE)
                           return this.rectPath( this.nodeRadius*1.8, this.nodeRadius*1.8);
                         else
-                          return this.rectCircle( this.nodeRadius);
+                          return this.circlePath( this.nodeRadius);
                       }
             )
+        .on("mouseover", function(node) {
+              var nodeSelection = d3.select(this);
+              // debugger;
+              nodeSelection.select(".actionCricle").style( "display", "block")
+          })
+        .on("mouseout", function(node) {
+              var nodeSelection = d3.select(this);
+              nodeSelection.select(".actionCricle").style( "display", "none")
+          })
 
+    
+    // Create context menu for each node
+    this.createContextMenu( nodeEnter );
 
     // Node Icon
     nodeEnter.append('text')
@@ -270,11 +283,11 @@ export class TreeModel {
           .attr('pointer-events', 'mouseover')
           .attr('d', (d) => { 
                               if (d.data.nodeSymbol == CIRCLE)
-                                return this.rectCircle( this.nodeRadius*2);
+                                return this.circlePath( this.nodeRadius*2);
                               else if(d.data.nodeSymbol == SQUARE)
                                 return this.rectPath( this.nodeRadius*2.8, this.nodeRadius*2.8);
                               else
-                                return this.rectCircle( this.nodeRadius*2);
+                                return this.circlePath( this.nodeRadius*2);
                             }
           )
           .on("mouseover", function(node) {
@@ -340,8 +353,84 @@ export class TreeModel {
         .on('click', function(d){
           treeModel.click(d, this);
           treeModel.update(d);
+        })
+        .on('mouseover', function(d){
+          treeModel.mouseover(d, this);
+          
+        })
+        .on('mouseout', function(d){
+          treeModel.mouseout(d, this);
+          
         });
     }
+  }
+
+  createContextMenu( parentNode ){
+      // Context Menu 
+      parentNode.append('path')
+      .attr( "class", "contextMenu")
+      .attr("opacity", (d) =>{
+                // debugger;
+                return d._children ? "1" : "0.75";  
+        } ) 
+      .style("fill", "white"
+          )
+      .style("stroke", "black"
+      )
+      .style("stroke-width", "1"
+      )
+      .style("display", "none"
+      )
+      .attr('d', (d) => { 
+                        return this.rectPath( this.nodeRadius * 3.3, this.nodeRadius * 1.2, this.nodeRadius * 0.75, this.nodeRadius * 0.75);
+                    }
+          )
+          
+      parentNode.append('text')
+      .attr( "class", "contextMenuIconRemove")
+      .attr('style', 'font-family: FontAwesome')
+      // .attr('class', 'nodeIcon')
+      // .attr('text-anchor', 'middle')
+      // .attr('alignment-baseline', 'middle')
+      .attr('x', this.nodeRadius * 0.9)
+      .attr('y', this.nodeRadius * 1.7)
+      .style("display", "none")
+      .style("cursor", "pointer"
+        )
+      .text(function(d) { 
+        return '\uf1f8';
+      }); 
+
+      parentNode.append('text')
+      .attr( "class", "contextMenuIconAdd")
+      .attr('style', 'font-family: FontAwesome')
+      // .attr('class', 'nodeIcon')
+      // .attr('text-anchor', 'middle')
+      // .attr('alignment-baseline', 'middle')
+      .attr('x', this.nodeRadius * 2)
+      .attr('y', this.nodeRadius * 1.7)
+      .style("display", "none")
+      .style("cursor", "pointer"
+        )
+      .text(function(d) { 
+        return '\uf067';
+      }); 
+
+      parentNode.append('text')
+      .attr( "class", "contextMenuIconDetails")
+      .attr('style', 'font-family: FontAwesome')
+      // .attr('class', 'nodeIcon')
+      // .attr('text-anchor', 'middle')
+      // .attr('alignment-baseline', 'middle')
+      .attr('x', this.nodeRadius * 2.9)
+      .attr('y', this.nodeRadius * 1.7)
+      .style("display", "none")
+      .style("cursor", "pointer"
+        )
+      .text(function(d) { 
+        return '\uf0ad';
+      }); 
+
   }
 
   dragBehaviour(){
@@ -527,6 +616,38 @@ export class TreeModel {
     this.nodeselected(d);
   }
 
+  /**
+   * Mouse over node event handler
+   * Shows node context menu
+   * @param d 
+   * @param domNode 
+   */
+  mouseover(d, domNode) {
+    // debugger;
+    var contextMenu = d3.select(domNode).select('.contextMenu')
+    var contextMenuIconRemove = d3.select(domNode).select('.contextMenuIconRemove')
+    var contextMenuIconAdd = d3.select(domNode).select('.contextMenuIconAdd')
+    var contextMenuIconDetails = d3.select(domNode).select('.contextMenuIconDetails')
+    
+    contextMenu.style( 'display', 'block');
+    contextMenuIconRemove.style( 'display', 'block');
+    contextMenuIconAdd.style( 'display', 'block');
+    contextMenuIconDetails.style( 'display', 'block');
+  }
+
+  mouseout(d, domNode) {
+    // debugger;
+    var contextMenu = d3.select(domNode).select('.contextMenu')
+    var contextMenuIconRemove = d3.select(domNode).select('.contextMenuIconRemove')
+    var contextMenuIconAdd = d3.select(domNode).select('.contextMenuIconAdd')
+    var contextMenuIconDetails = d3.select(domNode).select('.contextMenuIconDetails')
+
+    contextMenu.style( 'display', 'none');
+    contextMenuIconRemove.style( 'display', 'none');
+    contextMenuIconAdd.style( 'display', 'none');
+    contextMenuIconDetails.style( 'display', 'none');
+  }
+
   // Creates a curved (diagonal) path from parent to the child nodes
   diagonalCurvedPath(d, s) {
     return "M" + d.y + "," + d.x
@@ -534,27 +655,40 @@ export class TreeModel {
               + " " + (s.y + this.diagonalCurveRatio) + "," + s.x
               + " " + s.y + "," + s.x;
   }
-
-  rectPath( rectWidth: number, rectHeight: number){
-    // svg path
-    // Mx,y - move to
-    // H - draw horizontal line
-    // V - draw vertical line
-    // L - draw a line from current position to position ( x, y) defined with following values
-    // M10 10 H 90 V 90 H 10 L 10 10
-    let maxX = rectWidth / 2;
-    let maxY = rectHeight / 2;
-    let minX = -1 * maxX;
-    let minY = -1 * maxY;
+  /**
+   * Draws rectangel with given width and height. If parameters leftUpperCornerX and laftUpperCornerY are not set
+   * rectangle will be postioned in such way so that rectangle center is positioned at 0, 0 coordinate relative to parent
+   * svg object
+   * svg path
+   * Mx,y - move to
+   * H - draw horizontal line
+   * V - draw vertical line
+   * L - draw a line from current position to position ( x, y) defined with following values
+   * M10 10 H 90 V 90 H 10 L 10 10
+   * @param rectWidth 
+   * @param rectHeight 
+   * @param leftUpperCornerX 
+   * @param leftUpperCornerY 
+   */
+  rectPath( rectWidth: number, rectHeight: number, leftUpperCornerX: number = -1 * rectWidth / 2, leftUpperCornerY: number = -1 * rectHeight / 2){
+  
+    let maxX = leftUpperCornerX + rectWidth;
+    let maxY = leftUpperCornerY + rectHeight ;
+    let minX = leftUpperCornerX;
+    let minY = leftUpperCornerY;
     return `M${minX} ${minY} H ${maxX} V ${maxY} H ${minX} L ${minX} ${minY}`;
   }
 
-  rectCircle( radius: number){
+  /**
+   * Calculates SVG path for circle for given circle radius
+   * @param radius 
+   */
+  circlePath( radius: number, centerX: number = 0, centerY: number = 0){
     // a  rx ry x-axis-rotation large-arc-flag sweep-flag dx dy
     //    dx, dy - where the line stroke will end
     //    large-arc-flag. It simply determines if the arc should be greater than or less than 180 degrees; in the end
     // Mx,y - move to
-    return `M${-1*radius},0a${radius},${radius} 0 1,0 ${2*radius},0a${radius},${radius} 0 1,0 ${-2*radius},0`;
+    return `M${-1*radius + centerX},0a${radius},${radius} 0 1,0 ${2*radius},0a${radius},${radius} 0 1,0 ${-2*radius},0`;
   }
 
   radialPoint(x, y) {
