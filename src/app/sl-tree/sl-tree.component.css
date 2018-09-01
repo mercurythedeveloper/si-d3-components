@@ -8,8 +8,14 @@
     stroke-width: 2px; 
   }
 
-  :hover .contextMenuIcon {
-    fill: red;
+  :host ::ng-deep .contextMenuIcon {
+    /* fill: darkgrey; */
+    opacity: 0.5;
+  }
+
+  :host ::ng-deep .contextMenuIcon:hover {
+    /* fill: red; */
+    opacity: 1;
   }
 
   :host ::ng-deep .nodeIcon{
