@@ -8,6 +8,10 @@
     stroke-width: 2px; 
   }
 
+  :hover .contextMenuIcon {
+    fill: red;
+  }
+
   :host ::ng-deep .nodeIcon{
     fill: #fff;
     stroke: #fff;

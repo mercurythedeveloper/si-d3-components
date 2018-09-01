@@ -364,9 +364,18 @@ export class TreeModel {
         });
     }
   }
-
-  createContextMenu( parentNode ){
-      // Context Menu 
+  
+  /**
+   * Renders SVG objects that represent tree node context menu
+   * with icon buttons for adding new child node, removing node and 
+   * opening node details
+   * @param nodeEnter 
+   */
+  createContextMenu( nodeEnter ){
+      var parentNode = nodeEnter.append('g')
+        .attr( 'class', 'contextMenuG')
+        .style("display", "none")
+      
       parentNode.append('path')
       .attr( "class", "contextMenu")
       .attr("opacity", (d) =>{
@@ -375,11 +384,15 @@ export class TreeModel {
         } ) 
       .style("fill", "white"
           )
-      .style("stroke", "black"
-      )
+      .style("stroke", (d) => { 
+        if (d.data.nodeColor != undefined)
+          return d.data.nodeColor;
+        else
+          return "darkgray";
+      })
       .style("stroke-width", "1"
       )
-      .style("display", "none"
+      .style("display", "block"
       )
       .attr('d', (d) => { 
                         return this.rectPath( this.nodeRadius * 3.3, this.nodeRadius * 1.2, this.nodeRadius * 0.75, this.nodeRadius * 0.75);
@@ -387,14 +400,17 @@ export class TreeModel {
           )
           
       parentNode.append('text')
-      .attr( "class", "contextMenuIconRemove")
+      .attr( "class", "contextMenuIcon")
       .attr('style', 'font-family: FontAwesome')
-      // .attr('class', 'nodeIcon')
-      // .attr('text-anchor', 'middle')
-      // .attr('alignment-baseline', 'middle')
+      .style("fill", (d) => { 
+        if (d.data.nodeColor != undefined)
+          return d.data.nodeColor;
+        else
+          return "darkgray";
+      })
       .attr('x', this.nodeRadius * 0.9)
       .attr('y', this.nodeRadius * 1.7)
-      .style("display", "none")
+      .style("display", "block")
       .style("cursor", "pointer"
         )
       .text(function(d) { 
@@ -402,14 +418,17 @@ export class TreeModel {
       }); 
 
       parentNode.append('text')
-      .attr( "class", "contextMenuIconAdd")
+      .attr( "class", "contextMenuIcon")
       .attr('style', 'font-family: FontAwesome')
-      // .attr('class', 'nodeIcon')
-      // .attr('text-anchor', 'middle')
-      // .attr('alignment-baseline', 'middle')
+      .style("fill", (d) => { 
+        if (d.data.nodeColor != undefined)
+          return d.data.nodeColor;
+        else
+          return "darkgray";
+      })
       .attr('x', this.nodeRadius * 2)
       .attr('y', this.nodeRadius * 1.7)
-      .style("display", "none")
+      .style("display", "block")
       .style("cursor", "pointer"
         )
       .text(function(d) { 
@@ -417,14 +436,19 @@ export class TreeModel {
       }); 
 
       parentNode.append('text')
-      .attr( "class", "contextMenuIconDetails")
+      .attr( "class", "contextMenuIcon")
       .attr('style', 'font-family: FontAwesome')
-      // .attr('class', 'nodeIcon')
-      // .attr('text-anchor', 'middle')
-      // .attr('alignment-baseline', 'middle')
+      .style("fill", (d) => { 
+        if (d.data.nodeColor != undefined)
+          return d.data.nodeColor;
+        else
+          return "darkgray";
+      })
+      .style("font-weight", "normal")
+      // .style("font-fill", "white")
       .attr('x', this.nodeRadius * 2.9)
       .attr('y', this.nodeRadius * 1.7)
-      .style("display", "none")
+      .style("display", "block")
       .style("cursor", "pointer"
         )
       .text(function(d) { 
@@ -624,28 +648,28 @@ export class TreeModel {
    */
   mouseover(d, domNode) {
     // debugger;
-    var contextMenu = d3.select(domNode).select('.contextMenu')
-    var contextMenuIconRemove = d3.select(domNode).select('.contextMenuIconRemove')
-    var contextMenuIconAdd = d3.select(domNode).select('.contextMenuIconAdd')
-    var contextMenuIconDetails = d3.select(domNode).select('.contextMenuIconDetails')
+    var contextMenu = d3.select(domNode).select('.contextMenuG')
+    // var contextMenuIconRemove = d3.select(domNode).select('.contextMenuIconRemove')
+    // var contextMenuIconAdd = d3.select(domNode).select('.contextMenuIconAdd')
+    // var contextMenuIconDetails = d3.select(domNode).select('.contextMenuIconDetails')
     
     contextMenu.style( 'display', 'block');
-    contextMenuIconRemove.style( 'display', 'block');
-    contextMenuIconAdd.style( 'display', 'block');
-    contextMenuIconDetails.style( 'display', 'block');
+    // contextMenuIconRemove.style( 'display', 'block');
+    // contextMenuIconAdd.style( 'display', 'block');
+    // contextMenuIconDetails.style( 'display', 'block');
   }
 
   mouseout(d, domNode) {
     // debugger;
-    var contextMenu = d3.select(domNode).select('.contextMenu')
-    var contextMenuIconRemove = d3.select(domNode).select('.contextMenuIconRemove')
-    var contextMenuIconAdd = d3.select(domNode).select('.contextMenuIconAdd')
-    var contextMenuIconDetails = d3.select(domNode).select('.contextMenuIconDetails')
+    var contextMenu = d3.select(domNode).select('.contextMenuG')
+    // var contextMenuIconRemove = d3.select(domNode).select('.contextMenuIconRemove')
+    // var contextMenuIconAdd = d3.select(domNode).select('.contextMenuIconAdd')
+    // var contextMenuIconDetails = d3.select(domNode).select('.contextMenuIconDetails')
 
     contextMenu.style( 'display', 'none');
-    contextMenuIconRemove.style( 'display', 'none');
-    contextMenuIconAdd.style( 'display', 'none');
-    contextMenuIconDetails.style( 'display', 'none');
+    // contextMenuIconRemove.style( 'display', 'none');
+    // contextMenuIconAdd.style( 'display', 'none');
+    // contextMenuIconDetails.style( 'display', 'none');
   }
 
   // Creates a curved (diagonal) path from parent to the child nodes
