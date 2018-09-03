@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { D3LinearTreeNode } from '../interfaces/d3LinearTree';
 
 const SQUARE: string = "square";
 const CIRCLE: string = "circle";
@@ -13,12 +14,21 @@ export class TreeModel {
 
   // must be set to true in case of hiearchical JSON input data
   hierarchicalData: boolean = false;
-  // -----------------------
+
+  /**
+   * Root d3 tree node
+   */
   root: any;
+
+  /**
+   * Tree data received in class constructor
+   */
+  treeData: any;
+
   treeLayout: any;
   svg: any;
 
-  treeData: any;
+  
 
   height: number;
   width: number;
@@ -110,7 +120,12 @@ export class TreeModel {
       .separation((a,b)=>{return a.parent == b.parent ? this.siblingNodeSeparation : this.nodeSeparation});
   }
 
+  /**
+   * Called from parent class to start rendeing of the tree
+   * @param treeData 
+   */
   createTreeData(treeData: any){
+    this.treeData = treeData;
     if(this.hierarchicalData){
       this.root = d3.hierarchy(treeData);
     }
@@ -192,11 +207,10 @@ export class TreeModel {
     // This circle marks nodes that have child nodes
     // main node symbol
     nodeEnter.append('path')
-        .attr("opacity", (d) =>{
-                  // debugger;
+        .attr("opacity", (d) =>{                  
                   return d._children ? "1" : "0.75";  
           } ) 
-        .style("fill", (d) => { 
+        .style("fill", (d) => {             
                         if (d.data.nodeColor != undefined)
                           return d.data.nodeColor;
                         else
@@ -283,9 +297,9 @@ export class TreeModel {
           .attr('pointer-events', 'mouseover')
           .attr('d', (d) => { 
                               if (d.data.nodeSymbol == CIRCLE)
-                                return this.circlePath( this.nodeRadius*2);
+                                return this.circlePath( this.nodeRadius);
                               else if(d.data.nodeSymbol == SQUARE)
-                                return this.rectPath( this.nodeRadius*2.8, this.nodeRadius*2.8);
+                                return this.rectPath( this.nodeRadius*2.1, this.nodeRadius*2.1);
                               else
                                 return this.circlePath( this.nodeRadius*2);
                             }
@@ -415,7 +429,11 @@ export class TreeModel {
         )
       .text(function(d) { 
         return '\uf1f8';
-      }); 
+      })
+      .on("click", (node) => {
+        this.addNewTreeNode(node);
+      });
+
 
       parentNode.append('text')
       .attr( "class", "contextMenuIcon")
@@ -455,6 +473,66 @@ export class TreeModel {
         return '\uf0ad';
       }); 
 
+  }
+
+  /**
+   * Test method for adding new tree node
+   * @param parent 
+   */
+  addNewTreeNode(parent){
+    // debugger;
+    // var d = {
+    //     data :{
+    //     description : "new CFS",
+    //     id : "101",
+    //     // nodeColor : "darkgreen",
+    //     icon : "bla",
+    //     nodeSymbol : "square",
+    //     nodeColor: "red",
+    //     parent : parent.id
+    //     }
+    //     };
+
+    // var d = {id: "999", description: "bla", parent: parent.id, data: {id: "999", description: "bla", parent: parent.id}};
+    // var d = {data: {id: "15", description: "bla", parent: parent.id, nodeColor : 'red', nodeSymbol : CIRCLE }};
+    var d = {id: "15", description: "bla", parent: parent.id, nodeColor : 'red', nodeSymbol : CIRCLE, nodeICon : 'b' };
+      
+
+    try{
+      var obj = d3.hierarchy(d) as any;
+          obj.data.parent = parent.id;
+          obj.depth = parent.depth + 1;
+          obj.parent = parent;
+          obj.description = d.description;
+
+      d = obj;
+    }
+    catch(exc){
+      console.error("tree.dendo.model-addNewTreeNode: Error transforming D3LinearTreeNode object into d3 tree node.")
+    }
+
+    // if (parent.children) 
+    //   parent.children.push(d); 
+    // else 
+    //   parent.children = [d];
+
+    // this.treeData.push(d);
+    // this.update(parent);
+
+    if(parent){
+      if(parent.children)
+        parent.children.push(d);
+      else if(parent._children)
+        parent._children.push(d);
+      else
+        parent.children= [d];
+      this.update(parent);
+    }else{
+      this.root.children.push(d);
+      this.update(this.root);
+    }
+
+    this.nodeAddNew(parent);
   }
 
   dragBehaviour(){
@@ -720,19 +798,46 @@ export class TreeModel {
     
   }
 
-  addNode(newNode: any){
+  /**
+   * Adds new d3 tree node and re-renders tree. Method assumes that parent node is still selected and reference is kept in selectedNodeByClick
+   * @param newNode 
+   */
+  addNode(newNode: D3LinearTreeNode){
+
+    var newD3Node = this.transformDatatoNode( newNode, this.selectedNodeByClick );
+
     if(this.selectedNodeByClick){
       if(this.selectedNodeByClick.children)
-        this.selectedNodeByClick.children.push(newNode);
+        this.selectedNodeByClick.children.push(newD3Node);
       else if(this.selectedNodeByClick._children)
-        this.selectedNodeByClick._children.push(newNode);
+        this.selectedNodeByClick._children.push(newD3Node);
       else
-        this.selectedNodeByClick.children= [newNode];
+        this.selectedNodeByClick.children= [newD3Node];
       this.update(this.selectedNodeByClick);
     }else{
-      this.root.children.push(newNode);
+      this.root.children.push(newD3Node);
       this.update(this.root);
     }
+  }
+
+  /**
+   * Method transforms d3 data node into node that can be added to tree node and rendered properly
+   * @param d 
+   * @param parentd3Node 
+   */
+  transformDatatoNode(d: D3LinearTreeNode, parentd3Node: any): any{
+    var obj = null;
+    try{
+      obj = d3.hierarchy(d) as any;
+      obj.data.parent = parentd3Node.id;
+      obj.depth = parentd3Node.depth + 1;
+      obj.parent = parent;
+      obj.description = d.description;
+    }
+    catch(exc){
+      console.error("tree.dendo.model-transformDatatoNode: Error transforming D3LinearTreeNode object into d3 tree node.")
+    }
+    return obj;
   }
 
   //events
@@ -741,5 +846,7 @@ export class TreeModel {
   }
 
   nodeselected(node){}
+
+  nodeAddNew(node){}
 
 }

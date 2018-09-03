@@ -21,6 +21,12 @@ export class SlTreeComponent implements OnInit, OnChanges {
   @ViewChild("chart", {read: ElementRef}) chartContainer: ElementRef;
   @Output() onNodeChanged: EventEmitter<any>= new EventEmitter();
   @Output() onNodeSelected: EventEmitter<any>= new EventEmitter();
+
+  /**
+   * Handle add node event triggered by context menu add button (icon)
+   */
+  @Output() onNodeAdd: EventEmitter<any>= new EventEmitter();
+
   private _treeData: SIModel.SiTreeStructure;
   private _d3TreeData: D3LinearTree;
   @Input() private enableNodeDrag: boolean = false;
@@ -30,8 +36,14 @@ export class SlTreeComponent implements OnInit, OnChanges {
     treeService.setNodeChangedListener((node)=>{
       this.onNodeChanged.emit(node);
     })
+    
     treeService.setNodeSelectedListener((node)=>{
       this.onNodeSelected.emit(node);
+    })
+
+    treeService.setNodeAddListener((node)=>{
+      this.onNodeAdd.emit(node);
+      
     })
 
     
@@ -57,6 +69,7 @@ export class SlTreeComponent implements OnInit, OnChanges {
    * @param changes 
    */
   async ngOnChanges(changes: any) {
+    console.info("si-tree: data changes detected");
     await this.sleep(1000);
     this.seedTree();
   }

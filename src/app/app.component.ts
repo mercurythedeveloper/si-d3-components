@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 // import dataTreeSimple from '../assets/data-tree-simple';
 // import dataTreeSimple from '../assets/si-sample-location';
 import dataTreeSimple2 from '../assets/si-sample-specification-tree';
+import *  as SIModel from './interfaces/specificationTree'
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import dataTreeSimple2 from '../assets/si-sample-specification-tree';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  data: any;
+  data: SIModel.SiTreeStructure;
 
   selectedNode: any;
   constructor() {
@@ -29,6 +30,22 @@ export class AppComponent {
     // alert('Node selected: ' + node.id);
     this.selectedNode= node;
   }
+
+  nodeAdded(parentNode:any){
+    console.info("app detected add new node", parentNode);
+    // this.data.cfsTree.push(
+    //   {
+    //   name : "new CFS",
+    //   id : "101",
+    //   // nodeColor : "darkgreen",
+    //   icon : "bla",
+    //   nodeSymbol : "square",
+    //   parent : parentNode.id
+    //   }
+    // )
+   
+  }
+  
 
   // addNode():void{
   //   const parent= this.selectedNode? this.selectedNode.id: "1";
