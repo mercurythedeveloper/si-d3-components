@@ -3,7 +3,7 @@ import { TreeModel } from './tree.dendo.model';
 
 import { AngularD3TreeLibService } from './angular-d3-tree-lib.service';
 import *  as SIModel from '../interfaces/specificationTree'
-import { D3LinearTree } from '../interfaces/d3LinearTree'
+import { D3LinearTree, D3LinearTreeNode } from '../interfaces/d3LinearTree'
 
 
 @Component({
@@ -42,7 +42,8 @@ export class SlTreeComponent implements OnInit, OnChanges {
     })
 
     treeService.setNodeAddListener((node)=>{
-      this.onNodeAdd.emit(node);
+      // this.onNodeAdd.emit(node);
+      this.nodeAdded(node);
       
     })
 
@@ -87,6 +88,31 @@ export class SlTreeComponent implements OnInit, OnChanges {
       this.treeService.createChart(this.chartContainer, this._d3TreeData.result, this.enableNodeDrag);
       this.treeService.update();
     }
+  }
+
+  nodeAdded(parentNode:any){
+    console.info("si-tree-component: app detected add new node", parentNode);
+    var uuid = this.treeService.generateUUID();
+    var nodeNew : D3LinearTreeNode = {
+      id : uuid,
+      parent : parentNode.id,
+      nodeIcon : '',
+      nodeSymbol : "square",
+      nodeColor : "yellow",
+      description: uuid
+    }
+    this.treeService.addNode(nodeNew, parentNode);
+    // this.data.cfsTree.push(
+    //   {
+    //   name : "new CFS",
+    //   id : "101",
+    //   // nodeColor : "darkgreen",
+    //   icon : "bla",
+    //   nodeSymbol : "square",
+    //   parent : parentNode.id
+    //   }
+    // )
+   
   }
 
 

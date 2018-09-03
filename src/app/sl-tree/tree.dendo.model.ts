@@ -431,7 +431,8 @@ export class TreeModel {
         return '\uf1f8';
       })
       .on("click", (node) => {
-        this.addNewTreeNode(node);
+        // this.addNewTreeNode(node);
+        this.nodeAddNew(node);
       });
 
 
@@ -802,18 +803,18 @@ export class TreeModel {
    * Adds new d3 tree node and re-renders tree. Method assumes that parent node is still selected and reference is kept in selectedNodeByClick
    * @param newNode 
    */
-  addNode(newNode: D3LinearTreeNode){
+  addNode(newNode: D3LinearTreeNode, parentd3Node: any){
 
-    var newD3Node = this.transformDatatoNode( newNode, this.selectedNodeByClick );
+    var newD3Node = this.transformDatatoNode( newNode, parentd3Node );
 
-    if(this.selectedNodeByClick){
-      if(this.selectedNodeByClick.children)
-        this.selectedNodeByClick.children.push(newD3Node);
-      else if(this.selectedNodeByClick._children)
-        this.selectedNodeByClick._children.push(newD3Node);
+    if(parentd3Node){
+      if(parentd3Node.children)
+        parentd3Node.children.push(newD3Node);
+      else if(parentd3Node._children)
+        parentd3Node._children.push(newD3Node);
       else
-        this.selectedNodeByClick.children= [newD3Node];
-      this.update(this.selectedNodeByClick);
+        parentd3Node.children= [newD3Node];
+      this.update(parentd3Node);
     }else{
       this.root.children.push(newD3Node);
       this.update(this.root);
@@ -831,7 +832,7 @@ export class TreeModel {
       obj = d3.hierarchy(d) as any;
       obj.data.parent = parentd3Node.id;
       obj.depth = parentd3Node.depth + 1;
-      obj.parent = parent;
+      obj.parent = parentd3Node;
       obj.description = d.description;
     }
     catch(exc){

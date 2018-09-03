@@ -54,9 +54,8 @@ export class AngularD3TreeLibService {
    * Adds new node to d3 tree
    * @param node 
    */
-  addNode(node: D3LinearTreeNode){
-    // this.treeModel.addNode(node);
-    this.treeModel.addNewTreeNode(node);
+  addNode(node: D3LinearTreeNode, parentd3Node: any){
+    this.treeModel.addNode(node, parentd3Node);
   } 
 
 
@@ -141,7 +140,7 @@ export class AngularD3TreeLibService {
   /**
    * Generates random GUID like string
    */
-  generateUUID(){
+  generateUUID(): string{
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = (d + Math.random()*16)%16 | 0;
