@@ -44,4 +44,21 @@ export class Constants{
      * Default icon for service location specification and instance
      */
     public static LOCATION_DEFAULT_ICON = "\uf015";
+
+    /**
+     * Value determining structure of D3 tree data for rendering as linear
+     */
+    public static TREE_DATA_TYPE_LINEAR = "linear";
+
+    /**
+     * Value determining structure of D3 tree data for rendering as hierarchical
+     */
+    public static TREE_DATA_TYPE_HIERARCHICAL = "hierarchical";
 }
+
+
+export enum D3TreeDataType{
+    Hierarchical = "hiearchical",
+    Linear = "linear"
+  }
+  

@@ -4,6 +4,9 @@ import { TreeModel } from './tree.dendo.model';
 import { AngularD3TreeLibService } from './angular-d3-tree-lib.service';
 import *  as SIModel from '../interfaces/specificationTree'
 import { D3LinearTree, D3LinearTreeNode } from '../interfaces/d3LinearTree'
+import { D3TreeDataType } from "../classes/constants";
+
+
 
 
 @Component({
@@ -15,7 +18,6 @@ import { D3LinearTree, D3LinearTreeNode } from '../interfaces/d3LinearTree'
   `,
   styleUrls: [ './sl-tree.component.css']
 })
-
 export class SlTreeComponent implements OnInit, OnChanges {
 
   @ViewChild("chart", {read: ElementRef}) chartContainer: ElementRef;
@@ -28,8 +30,19 @@ export class SlTreeComponent implements OnInit, OnChanges {
   @Output() onNodeAdd: EventEmitter<any>= new EventEmitter();
 
   private _treeData: SIModel.SiTreeStructure;
-  private _d3TreeData: D3LinearTree;
+  private _d3TreeData: any;
+
+  /**
+   * Determines if tree node drag event is enabled
+   */
   @Input() private enableNodeDrag: boolean = false;
+
+  /**
+   * Determines the input D3 tree data structure: hierachical or linear
+   */
+  @Input() public treeDataType: string = "linear";
+
+
 
   constructor( private treeService: AngularD3TreeLibService ) { 
 
@@ -55,8 +68,14 @@ export class SlTreeComponent implements OnInit, OnChanges {
    */
   @Input()
   set treeData(inputTreeData: SIModel.SiTreeStructure) {
+    console.info("this.treeDataType:  " + this.treeDataType);
     this._treeData = inputTreeData;
-    this._d3TreeData = this.treeService.transformSiLocationData(this._treeData);
+    if (this.treeDataType == D3TreeDataType.Linear){
+      this._d3TreeData = this.treeService.transformSiLocationDataLinear(this._treeData);
+    }
+    else{
+      this._d3TreeData = this.treeService.transformSiLocationDataHierarchical(this._treeData);
+    }
   }
 
   ngOnInit() {
@@ -85,7 +104,9 @@ export class SlTreeComponent implements OnInit, OnChanges {
   
   seedTree(){
     if(!!this._d3TreeData){
-      this.treeService.createChart(this.chartContainer, this._d3TreeData.result, this.enableNodeDrag);
+      this.treeService.createChart(this.chartContainer, this._d3TreeData.result
+        , this.enableNodeDrag
+        , this.treeDataType == D3TreeDataType.Linear ? D3TreeDataType.Linear : D3TreeDataType.Hierarchical);
       this.treeService.update();
     }
   }
@@ -102,16 +123,7 @@ export class SlTreeComponent implements OnInit, OnChanges {
       description: uuid
     }
     this.treeService.addNode(nodeNew, parentNode);
-    // this.data.cfsTree.push(
-    //   {
-    //   name : "new CFS",
-    //   id : "101",
-    //   // nodeColor : "darkgreen",
-    //   icon : "bla",
-    //   nodeSymbol : "square",
-    //   parent : parentNode.id
-    //   }
-    // )
+    
    
   }
 

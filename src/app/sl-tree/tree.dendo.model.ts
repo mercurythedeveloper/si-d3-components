@@ -1,19 +1,28 @@
 import * as d3 from 'd3';
 import { D3LinearTreeNode } from '../interfaces/d3LinearTree';
+import { D3TreeDataType } from "../classes/constants";
 
 const SQUARE: string = "square";
 const CIRCLE: string = "circle";
 
 const DEFAULT_NODE_ICON: string = "\uf013";;
 
+
 /* based on http://bl.ocks.org/robschmuecker/7880033 */
 export class TreeModel {
 
-  // Configurable Parameters
+  /**
+   * Determines if tree nodes can be dragged
+   */
   enableNodeDrag: boolean = false;
 
-  // must be set to true in case of hiearchical JSON input data
-  hierarchicalData: boolean = false;
+  /**
+   * Determines input data structure; linear vs hierarchical
+   */
+  treeDataType: D3TreeDataType = D3TreeDataType.Linear;
+
+  // // must be set to true in case of hiearchical JSON input data
+  // hierarchicalData: boolean = false;
 
   /**
    * Root d3 tree node
@@ -126,7 +135,7 @@ export class TreeModel {
    */
   createTreeData(treeData: any){
     this.treeData = treeData;
-    if(this.hierarchicalData){
+    if(this.treeDataType == D3TreeDataType.Hierarchical){
       this.root = d3.hierarchy(treeData);
     }
     else{
