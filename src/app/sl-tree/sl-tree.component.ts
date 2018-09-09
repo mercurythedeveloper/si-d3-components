@@ -40,7 +40,7 @@ export class SlTreeComponent implements OnInit, OnChanges {
   /**
    * Determines the input D3 tree data structure: hierachical or linear
    */
-  @Input() public treeDataType: string = "linear";
+  @Input() public treeDataType: string = "hierarchical";
 
 
 
@@ -59,8 +59,6 @@ export class SlTreeComponent implements OnInit, OnChanges {
       this.nodeAdded(node);
       
     })
-
-    
   }
 
   /**

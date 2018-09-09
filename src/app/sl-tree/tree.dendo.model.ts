@@ -75,6 +75,8 @@ export class TreeModel {
   nodes: any[];
   selectedNodeByDrag: any;
 
+  i: number = 0;
+
   selectedNodeByClick: any;
   previousClickedDomNode: any;
 
@@ -84,6 +86,7 @@ export class TreeModel {
   }
 
   addSvgToContainer(chartContainer: any){
+    // debugger;
     let element = chartContainer.nativeElement;
 
     this.width = element.offsetWidth - this.margin.left - this.margin.right;
@@ -154,6 +157,7 @@ export class TreeModel {
   }
 
   collapse(d) {
+    console.info( "collapse: description " + d.data.description)
     if(d.children) {
       d._children = d.children
       d._children.map((d)=>this.collapse(d));
@@ -183,6 +187,8 @@ export class TreeModel {
   }
 
   update(source) {
+    console.info("update: source.data.id=" + source.data.id);
+    // debugger;
     const treeData = this.treeLayout(this.root);
 
     this.setNodes(source, treeData);
@@ -191,8 +197,9 @@ export class TreeModel {
 
   }
 
-  setNodes(source:any, treeData: any){
-    let nodes = treeData.descendants();
+  setNodes(source:any, treeLayout: any){
+    let nodes = treeLayout.descendants();
+    // debugger;
     let i = 0;
     let treeModel= this;
     let nodeTextX  = this.nodeTextDistanceX;
@@ -203,9 +210,13 @@ export class TreeModel {
 
     
     var node = this.svg.selectAll('g.node')
-        .data(nodes, function(d) {return d.id || (d.id = ++this.i); });
+        .data(nodes
+          // // this was causing whole tree to be updated on second level leef expand action
+          , function(d) { return d.id = d.data.id; }
+        );
 
     // Set each node g element  
+    // Enter any new nodes at the parent's previous position.
     var nodeEnter = node.enter().append('g')
         .attr('class', 'node')
         .attr("transform", function(d) {
@@ -242,15 +253,15 @@ export class TreeModel {
                           return this.circlePath( this.nodeRadius);
                       }
             )
-        .on("mouseover", function(node) {
-              var nodeSelection = d3.select(this);
-              // debugger;
-              nodeSelection.select(".actionCricle").style( "display", "block")
-          })
-        .on("mouseout", function(node) {
-              var nodeSelection = d3.select(this);
-              nodeSelection.select(".actionCricle").style( "display", "none")
-          })
+          .on("mouseover", function(node) {
+                var nodeSelection = d3.select(this);
+                // debugger;
+                nodeSelection.select(".actionCricle").style( "display", "block")
+            })
+          .on("mouseout", function(node) {
+                var nodeSelection = d3.select(this);
+                nodeSelection.select(".actionCricle").style( "display", "none")
+            })
 
     
     // Create context menu for each node
@@ -332,6 +343,7 @@ export class TreeModel {
           return "translate(" + d.y + "," + d.x + ")";
        });
 
+
     // Mark nodes that are not expanded and have child nodes
     nodeUpdate.select('path')
       .attr('r', this.nodeRadius)
@@ -340,7 +352,8 @@ export class TreeModel {
       } ) 
       .attr('cursor', 'pointer');
 
-    var nodeExit = node.exit().transition()
+    var nodeExit = node.exit()
+    .transition()
         .duration(this.duration)
         .attr("transform", function(d) {
             return "translate(" + source.y + "," + source.x + ")";
@@ -374,6 +387,7 @@ export class TreeModel {
     else{
       nodeEnter
         .on('click', function(d){
+          console.info("Node click detected..." + d.data.description)
           treeModel.click(d, this);
           treeModel.update(d);
         })
@@ -441,8 +455,16 @@ export class TreeModel {
       })
       .on("click", (node) => {
         // this.addNewTreeNode(node);
+        console.info("Node context menu click detected...")
+        d3.event.stopPropagation(); 
         this.nodeAddNew(node);
-      });
+      })
+      // .on("mouseout", (node) => {
+      //   // this.addNewTreeNode(node);
+      //   console.info("Node context menu mouseout detected...")
+      //   d3.event.stopPropagation(); 
+        
+      // });
 
 
       parentNode.append('text')
@@ -461,7 +483,13 @@ export class TreeModel {
         )
       .text(function(d) { 
         return '\uf067';
-      }); 
+      })
+      .on("click", (node) => {
+        // this.addNewTreeNode(node);
+        console.info("Node context menu click detected...")
+        d3.event.stopPropagation(); 
+        
+      });
 
       parentNode.append('text')
       .attr( "class", "contextMenuIcon")
@@ -481,7 +509,13 @@ export class TreeModel {
         )
       .text(function(d) { 
         return '\uf0ad';
-      }); 
+      })
+      .on("click", (node) => {
+        // this.addNewTreeNode(node);
+        console.info("Node context menu click detected...")
+        d3.event.stopPropagation(); 
+        
+      });
 
   }
 
@@ -679,7 +713,11 @@ export class TreeModel {
   setLinks( source: any, treeData: any){
     let links = treeData.descendants().slice(1);
     var link = this.svg.selectAll('path.link')
-        .data(links, function(d) { return d.id; });
+        .data(links
+          // // this was causing whole tree to be updated on second level leef expand action
+          // , function(d) { return d.id; }
+          , function(d) { return d.id = d.data.id; }
+        );
 
     // Enter any new links at the parent's previous position.
     var linkEnter = link.enter().insert('path', "g")
@@ -710,21 +748,23 @@ export class TreeModel {
       // this.previousClickedDomNode.classList.remove("selected");
       d3.select(this.previousClickedDomNode).select('.ghostCircle').attr('class', 'ghostCircle');
     }
+    
     if (d.children) {
         d._children = d.children;
         d.children = null;
 
-        // domNode.classList.remove("selected");
+        domNode.classList.remove("selected");
     } else {
       d.children = d._children;
       d._children = null;
 
-      // domNode.classList.add("selected");
+      domNode.classList.add("selected");
       
     }
     this.selectedNodeByClick= d;
     this.previousClickedDomNode= domNode;
     d3.select(domNode).select('.ghostCircle').attr('class', 'ghostCircle show');
+    
     this.nodeselected(d);
   }
 
@@ -826,7 +866,7 @@ export class TreeModel {
       this.update(parentd3Node);
     }else{
       this.root.children.push(newD3Node);
-      this.update(this.root);
+      // this.update(this.root);
     }
   }
 
