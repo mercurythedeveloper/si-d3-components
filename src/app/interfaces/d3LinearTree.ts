@@ -15,6 +15,10 @@ export class D3LinearTreeNode{
     nodeSymbol: string;
     nodeColor: string;
     parent?: string;
+    /**
+     * Type of node in context of SI: CFS, RFS
+     */
+    type: string;
 }
 
 export class D3HierarchicalTree{
@@ -30,6 +34,9 @@ export class D3HierarchicalTreeNode{
     nodeIcon: string;
     nodeSymbol: string;
     nodeColor: string;
-
+    /**
+     * Type of node in context of SI: CFS, RFS
+     */
+    type: string;
     children: D3HierarchicalTreeNode[];
 }

@@ -74,7 +74,8 @@ export class AngularD3TreeLibService {
         "parent":parentNodeId,
         "nodeIcon": (cfs.icon == null || cfs.icon == "") ? Constants.RFSS_DEFAULT_ICON : cfs.icon,
         "nodeSymbol": Constants.CFS_DEFAULT_SYMBOL,
-        "nodeColor": Constants.CFSS_DEFAULT_COLOR
+        "nodeColor": Constants.CFSS_DEFAULT_COLOR,
+        "type" : Constants.LOCATION_D3_NODE_TYPE
       }
       resultTree.push(d3TreeNode);
 
@@ -104,7 +105,8 @@ export class AngularD3TreeLibService {
         "nodeIcon": (cfs.icon == null || cfs.icon == "") ? Constants.RFSS_DEFAULT_ICON : cfs.icon,
         "nodeSymbol": Constants.CFS_DEFAULT_SYMBOL,
         "nodeColor": Constants.CFSS_DEFAULT_COLOR,
-        "children": []
+        "children": [],
+        "type" : Constants.CFSS_D3_NODE_TYPE
       }
       
 
@@ -138,7 +140,8 @@ export class AngularD3TreeLibService {
         "parent":parentNodeId,
         "nodeIcon": (rfs.icon == null || rfs.icon == "") ? Constants.RFSS_DEFAULT_ICON : rfs.icon,
         "nodeSymbol": Constants.RFS_DEFAULT_SYMBOL,
-        "nodeColor": Constants.RFSS_DEFAULT_COLOR
+        "nodeColor": Constants.RFSS_DEFAULT_COLOR,
+        "type" : Constants.CFSS_D3_NODE_TYPE
       }
       resultTree.push(d3TreeNode)
       if(rfs.childRFSs != null && rfs.childRFSs.length > 0){
@@ -163,7 +166,8 @@ export class AngularD3TreeLibService {
         "nodeIcon": (rfs.icon == null || rfs.icon == "") ? Constants.RFSS_DEFAULT_ICON : rfs.icon,
         "nodeSymbol": Constants.RFS_DEFAULT_SYMBOL,
         "nodeColor": Constants.RFSS_DEFAULT_COLOR,
-        "children": []
+        "children": [],
+        "type" : Constants.RFSS_D3_NODE_TYPE
       }
       
       // RFS specification can have only RFS specifications as children
@@ -190,7 +194,8 @@ export class AngularD3TreeLibService {
       "description": siTree.location.name,
       "nodeIcon": Constants.LOCATION_DEFAULT_ICON,
       "nodeSymbol": Constants.LOCATION_DEFAULT_SYMBOL,
-      "nodeColor": Constants.LOCATION_SPEC_DEFAULT_COLOR
+      "nodeColor": Constants.LOCATION_SPEC_DEFAULT_COLOR,
+      "type" : Constants.LOCATION_D3_NODE_TYPE
       
     }
     
@@ -214,7 +219,8 @@ export class AngularD3TreeLibService {
       "nodeIcon": Constants.LOCATION_DEFAULT_ICON,
       "nodeSymbol": Constants.LOCATION_DEFAULT_SYMBOL,
       "nodeColor": Constants.LOCATION_SPEC_DEFAULT_COLOR,
-      "children": []
+      "children": [],
+      "type" : Constants.LOCATION_D3_NODE_TYPE
       
     }
     

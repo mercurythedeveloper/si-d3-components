@@ -22,10 +22,10 @@
             "type": "string",
             "title": "Service Specification Type",
             "description": "Service Specification Type",
-            "default": "",
-            "enum": [
-              "RFS", "CFS"
-            ]
+            "default": ""
+            // ,"enum": [
+            //   "RFSS", "CFSS"
+            // ]
           },
           "id": {
             "type": "string",

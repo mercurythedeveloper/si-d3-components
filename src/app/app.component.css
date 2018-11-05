@@ -2,3 +2,24 @@
     margin-right:20px;
     cursor: pointer;
 }
+
+.right-menu{
+    width: 500px;
+    align-content: center;
+}
+
+.service-type-select{
+    max-width: "700px"
+}
+
+.rightMenuContainer{
+    margin: 2em;
+    width: "100%"
+}
+
+/*
+    Right menut control css
+*/
+.rightMenuContainer .mat-form-field{
+    width:400px;
+}

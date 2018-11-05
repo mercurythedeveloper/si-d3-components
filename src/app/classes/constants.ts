@@ -54,6 +54,21 @@ export class Constants{
      * Value determining structure of D3 tree data for rendering as hierarchical
      */
     public static TREE_DATA_TYPE_HIERARCHICAL = "hierarchical";
+
+    /**
+     * D3 tree node type value for node that is service location
+     */
+    public static LOCATION_D3_NODE_TYPE = "LOCATION";
+
+    /**
+     * D3 tree node type value for node that is resource facing service specification
+     */
+    public static RFSS_D3_NODE_TYPE = "RFSS";
+
+    /**
+     * D3 tree node type value for node that is customer facing service specification
+     */
+    public static CFSS_D3_NODE_TYPE = "CFSS";
 }
 
 

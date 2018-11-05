@@ -12,6 +12,7 @@ const dataTreeSimple2 = {
         "maxSize" : 1,
         "minSize" : 1,
         "schemaUri" : "",
+        "type" : "CFSS",
         "childCFSs" : [
           {
             "id" : "2",
@@ -20,6 +21,7 @@ const dataTreeSimple2 = {
             "maxSize" : 1,
             "minSize" : 1,
             "schemaUri" : "",
+            "type" : "CFSS",
             "childCFSs" : [
       			{
                   "id" : "3",
@@ -28,6 +30,7 @@ const dataTreeSimple2 = {
                   "maxSize" : 1,
                   "minSize" : 1,
                   "schemaUri" : "",
+                  "type" : "CFSS",
                   "childCFSs" : [],
                   "childRFSs" : []
 
@@ -38,9 +41,10 @@ const dataTreeSimple2 = {
                 "id" : "4",
                 "name" : "Modem",
                 "version": "1.0.0",
-            	"maxSize" : 1,
-            	"minSize" : 1,
-            	"schemaUri" : "",
+                "maxSize" : 1,
+                "minSize" : 1,
+                "schemaUri" : "",
+                "type" : "RFSS",
                 "childRFSs" : []
                 
               },
@@ -48,9 +52,10 @@ const dataTreeSimple2 = {
                 "id" : "5",
                 "name" : "WiFiPassword",
                 "version": "1.0.0",
-            	"maxSize" : 1,
-            	"minSize" : 1,
-            	"schemaUri" : "",
+                "maxSize" : 1,
+                "minSize" : 1,
+                "schemaUri" : "",
+                "type" : "RFSS",
                 "childRFSs" : []
                 
               },
@@ -58,9 +63,10 @@ const dataTreeSimple2 = {
                 "id" : "6",
                 "name" : "PPPoEAccount",
                 "version": "1.0.0",
-            	"maxSize" : 1,
-            	"minSize" : 1,
-            	"schemaUri" : "",
+                "maxSize" : 1,
+                "minSize" : 1,
+                "schemaUri" : "",
+                "type" : "RFSS",
                 "childRFSs" : []
                 
               }               
@@ -75,6 +81,7 @@ const dataTreeSimple2 = {
             "maxSize" : 1,
             "minSize" : 1,
             "schemaUri" : "",
+            "type" : "RFSS",
             "childRFSs" : []
           } ,
           {
@@ -84,6 +91,7 @@ const dataTreeSimple2 = {
             "maxSize" : 1,
             "minSize" : 1,
             "schemaUri" : "",
+            "type" : "RFSS",
             "childRFSs" : []
           } ,
           {
@@ -93,6 +101,7 @@ const dataTreeSimple2 = {
             "maxSize" : 1,
             "minSize" : 1,
             "schemaUri" : "",
+            "type" : "RFSS",
             "childRFSs" : []
           } ,
           {
@@ -102,6 +111,7 @@ const dataTreeSimple2 = {
             "maxSize" : 1,
             "minSize" : 1,
             "schemaUri" : "",
+            "type" : "RFSS",
             "childRFSs" : []
           }
         ]

@@ -4,7 +4,7 @@ import { TreeModel } from './tree.dendo.model';
 import { AngularD3TreeLibService } from './angular-d3-tree-lib.service';
 import *  as SIModel from '../interfaces/specificationTree'
 import { D3LinearTree, D3LinearTreeNode } from '../interfaces/d3LinearTree'
-import { D3TreeDataType } from "../classes/constants";
+import { Constants, D3TreeDataType } from "../classes/constants";
 
 
 
@@ -55,8 +55,7 @@ export class SlTreeComponent implements OnInit, OnChanges {
     })
 
     treeService.setNodeAddListener((node)=>{
-      // this.onNodeAdd.emit(node);
-      this.nodeAdded(node);
+      this.onNodeAdd.emit(node);
       
     })
   }
@@ -109,21 +108,40 @@ export class SlTreeComponent implements OnInit, OnChanges {
     }
   }
 
-  nodeAdded(parentNode:any){
+  addRFSSNode(parentNode:any, nodeIcon, description){
     console.info("si-tree-component: app detected add new node", parentNode);
     var uuid = this.treeService.generateUUID();
     var nodeNew : D3LinearTreeNode = {
       id : uuid,
       parent : parentNode.id,
-      nodeIcon : '',
-      nodeSymbol : "square",
-      nodeColor : "yellow",
-      description: uuid
+      nodeIcon : nodeIcon,
+      nodeSymbol : Constants.RFS_DEFAULT_SYMBOL,
+      nodeColor : Constants.RFSS_DEFAULT_COLOR,
+      description: description,
+      type: Constants.RFSS_D3_NODE_TYPE
+      
     }
+
+    this.treeService.addNode(nodeNew, parentNode);
+  }
+
+  addCFSSNode(parentNode:any, nodeIcon, description){
+    var uuid = this.treeService.generateUUID();
+    var nodeNew : D3LinearTreeNode = {
+      id : uuid,
+      parent : parentNode.id,
+      nodeIcon : nodeIcon,
+      nodeSymbol : Constants.CFS_DEFAULT_SYMBOL,
+      nodeColor : Constants.CFSS_DEFAULT_COLOR,
+      description: description,
+      type: Constants.CFSS_D3_NODE_TYPE
+      
+    }
+
     this.treeService.addNode(nodeNew, parentNode);
     
    
-  }
+  }  
 
 
 }

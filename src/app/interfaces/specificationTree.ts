@@ -57,7 +57,7 @@ export interface CfsSpecification {
     /**
      * Service Specification Type
      */
-    type?: ServiceSpecificationType;
+    type?: string;
     /**
      * Once service tree specification is finished and published to production it will receive
      * version number. If there is requirement to change service tree specification,
@@ -104,7 +104,7 @@ export interface RfsSpecification {
     /**
      * Service Specification Type
      */
-    type?: ServiceSpecificationType;
+    type?: string;
     /**
      * Once service tree specification is finished and published to production it will receive
      * version number. If there is requirement to change service tree specification,
@@ -118,8 +118,8 @@ export interface RfsSpecification {
  * Service Specification Type
  */
 export enum ServiceSpecificationType {
-    Cfs = "CFS",
-    Rfs = "RFS",
+    Cfs = "CFSS",
+    Rfs = "RFSS",
 }
 
 export interface Location {
