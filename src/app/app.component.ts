@@ -7,6 +7,7 @@ import dataTreeSimple2 from '../assets/si-sample-specification-tree';
 import *  as SIModel from './interfaces/specificationTree'
 import {FormControl, Validators} from '@angular/forms';
 import { MatDrawer} from '@angular/material';
+import {MatDividerModule} from '@angular/material/divider'; 
 import { Constants } from "./classes/constants";
 import{ SlTreeComponent } from "./sl-tree/sl-tree.component"
 
@@ -80,25 +81,32 @@ export class AppComponent {
         
       ];
     }
-   
   }
+
+  onServiceNameChange( serviceName: string){
+    // this.serviceCode = serviceName.split(" ").join("");
+    this.serviceCode = serviceName.replace(/\W/g, '')
+  }
+  
 
   addNode(event: any){
     console.debug("addNode");
     console.debug(this.serviceTypeSelectControl.value);
     debugger;
     if(this.serviceTypeSelectControl.value != null && this.serviceTypeSelectControl.value.type == Constants.RFSS_D3_NODE_TYPE ){
-      this.siTree.addRFSSNode(this.selectedParentNode, Constants.RFSS_DEFAULT_ICON, this.serviceTypeSelectControl.value.name);
+      this.siTree.addRFSSNode(this.selectedParentNode, Constants.RFSS_DEFAULT_ICON, this.serviceName);
     }
     else if(this.serviceTypeSelectControl.value != null && this.serviceTypeSelectControl.value.type == Constants.CFSS_D3_NODE_TYPE ){
-      this.siTree.addCFSSNode(this.selectedParentNode, Constants.RFSS_DEFAULT_ICON, this.serviceTypeSelectControl.value.name);
+      this.siTree.addCFSSNode(this.selectedParentNode, Constants.RFSS_DEFAULT_ICON, this.serviceName);
     }
   }
 
   serviceTypeSelectControl = new FormControl('', [Validators.required]);
-  serviceTypes: ServiceType[] = [
-    // {name: 'Resource Facing Service Specification', type: 'RFSS'},
-    // {name: 'Customer Facing Service Specification', type: 'CFSS'},
-  ];
+  serviceNameInputControl = new FormControl();
+  serviceName = "";
+  serviceCode = "";
+
+
+  serviceTypes: ServiceType[] = [];
 
 }

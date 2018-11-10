@@ -48,7 +48,44 @@
           <mat-error *ngIf="serviceTypeSelectControl.hasError('required')">Please choose an animal</mat-error>
           <mat-hint>{{serviceTypeSelectControl.value?.sound}}</mat-hint>
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="addNode($event)" >Add Node</button>
+        <mat-form-field class="example-full-width" [formControl]="serviceNameInputControl">
+          <input matInput placeholder="Service specification name" [value]="" [(ngModel)]="serviceName" (input)="onServiceNameChange($event.target.value)"  >
+        </mat-form-field>
+        <mat-form-field class="example-full-width" [formControl]="serviceCodeInputControl" readonly="true">
+          <input matInput placeholder="Service specification code" [value]="" [(ngModel)]="serviceCode"  >
+        </mat-form-field>
+
+
+        <!-- <mat-list>
+          <mat-list-item>Service Instance Model</mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-form-field class="example-full-width"  readonly="true">
+            <input matInput placeholder="Service specification code" [value]=""  >
+          </mat-form-field>
+          
+        </mat-list> -->
+
+
+        <mat-tab-group>
+          <mat-tab label="Service Instance Model">
+
+          </mat-tab>
+          <mat-tab label="Child Services">
+
+          </mat-tab>
+
+        </mat-tab-group>
+        <br/><br/><br/>
+        <!-- <button mat-raised-button color="primary" (click)="addNode($event)" >Add Node</button> -->
+        <mat-toolbar>  
+          <mat-toolbar-row>
+            <span>First Row</span>
+          </mat-toolbar-row>
+        
+          <mat-toolbar-row>
+            <span>Second Row</span>
+          </mat-toolbar-row>
+        </mat-toolbar>
       </div>
     </mat-drawer>      
   </mat-drawer-container>
